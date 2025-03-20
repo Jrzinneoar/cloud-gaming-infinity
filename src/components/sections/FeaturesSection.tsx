@@ -45,12 +45,12 @@ const FeaturesSection = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {features.map((feature, index) => (
           <GlassCard 
             key={index} 
             hoverEffect={true}
-            className={`animate-fade-up animation-delay-${index * 200}`}
+            className={`animate-fade-up animation-delay-${index * 100} transform transition-all duration-500 hover:scale-105`}
           >
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 p-3 bg-gradient-to-br from-rive-purple/20 to-transparent rounded-full">

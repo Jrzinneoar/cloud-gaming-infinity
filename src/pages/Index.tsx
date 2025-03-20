@@ -5,10 +5,8 @@ import Footer from '../components/layout/Footer';
 import ParticleBackground from '../components/ui/ParticleBackground';
 import HeroSection from '../components/sections/HeroSection';
 import FeaturesSection from '../components/sections/FeaturesSection';
-import DownloadSection from '../components/sections/DownloadSection';
-import PlansSection from '../components/sections/PlansSection';
 import PageTransition from '../components/ui/PageTransition';
-import { useMaintenanceStore } from '../services/maintenanceService';
+import { useMaintenanceStore, initMaintenanceBotConnection } from '../services/maintenanceService';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +21,12 @@ const Index = () => {
     }
   }, [isMaintenanceMode, navigate]);
 
+  // Initialize maintenance bot connection
+  useEffect(() => {
+    const cleanupBot = initMaintenanceBotConnection();
+    return () => cleanupBot();
+  }, []);
+
   return (
     <PageTransition>
       <Helmet>
@@ -36,8 +40,6 @@ const Index = () => {
       <main className="overflow-hidden">
         <HeroSection />
         <FeaturesSection />
-        <DownloadSection />
-        <PlansSection />
       </main>
       
       <Footer />

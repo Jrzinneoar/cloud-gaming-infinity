@@ -39,6 +39,8 @@ export const useMaintenanceStore = create<MaintenanceState>((set) => ({
         ? 'Iniciando modo de manutenção do sistema' 
         : 'Finalizando modo de manutenção do sistema';
       
+      console.log('Maintenance mode toggled:', newMode);
+      
       return {
         isMaintenanceMode: newMode,
         maintenanceLogs: [
@@ -72,6 +74,8 @@ export const useMaintenanceStore = create<MaintenanceState>((set) => ({
   // This simulates what a Discord bot would do
   simulateBotAction: (action, value) => 
     set((state) => {
+      console.log('Bot action triggered:', action, value);
+      
       switch (action) {
         case 'enable':
           return {
@@ -147,6 +151,8 @@ export const initMaintenanceBotConnection = () => {
     'Configurando novas instâncias'
   ];
   
+  let timeoutId: ReturnType<typeof setTimeout>;
+  
   // Random bot activity simulation
   const simulateRandomBotActivity = () => {
     const { simulateBotAction, addMaintenanceLog } = useMaintenanceStore.getState();
@@ -171,14 +177,24 @@ export const initMaintenanceBotConnection = () => {
     
     // Schedule next activity
     const nextDelay = Math.floor(Math.random() * 30000) + 15000; // 15-45 seconds
-    setTimeout(simulateRandomBotActivity, nextDelay);
+    timeoutId = setTimeout(simulateRandomBotActivity, nextDelay);
   };
   
   // Start the simulation after a short delay
-  setTimeout(simulateRandomBotActivity, 10000);
+  timeoutId = setTimeout(simulateRandomBotActivity, 5000);
+  
+  // Simulate an initial bot message
+  useMaintenanceStore.getState().addMaintenanceLog('Bot de manutenção conectado com sucesso');
   
   return () => {
     console.log('Disconnecting from maintenance bot (simulated)');
+    clearTimeout(timeoutId);
     // Cleanup would happen here in a real implementation
   };
+};
+
+// Export a function to manually trigger the bot for testing
+export const triggerMaintenanceBot = (action: 'enable' | 'disable') => {
+  const { simulateBotAction } = useMaintenanceStore.getState();
+  simulateBotAction(action);
 };

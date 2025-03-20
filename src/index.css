@@ -53,6 +53,10 @@
     font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
   }
 
+  body.transition-active {
+    @apply overflow-hidden;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
@@ -88,7 +92,7 @@
   }
   
   .primary-button {
-    @apply bg-rive-purple hover:bg-rive-purple-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 ease-in-out shadow-md hover:shadow-lg;
+    @apply bg-rive-purple hover:bg-rive-purple-dark text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 ease-in-out shadow-md hover:shadow-lg hover:scale-105;
   }
   
   .secondary-button {
@@ -96,7 +100,7 @@
   }
   
   .subtle-button {
-    @apply bg-transparent hover:bg-white/5 border border-white/10 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    @apply bg-transparent hover:bg-white/5 border border-white/10 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105;
   }
   
   .glass-input {
@@ -117,8 +121,20 @@
 }
 
 @layer utilities {
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  
   .animation-delay-200 {
     animation-delay: 200ms;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animation-delay-400 {
+    animation-delay: 400ms;
   }
   
   .animation-delay-500 {
@@ -131,5 +147,17 @@
   
   .animation-delay-1000 {
     animation-delay: 1000ms;
+  }
+  
+  .hover-float {
+    transition: transform 0.3s ease;
+  }
+  
+  .hover-float:hover {
+    transform: translateY(-5px);
+  }
+  
+  .hover-glow:hover {
+    box-shadow: 0 0 15px theme('colors.rive.purple');
   }
 }
