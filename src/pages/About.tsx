@@ -48,43 +48,31 @@ const About = () => {
       <ParticleBackground />
       <Navbar />
       
-      <main className="pt-24">
+      <main className="pt-36 pb-20 container mx-auto px-4 text-center">
         {/* Hero Section */}
-        <section className="section-container">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <div className="md:w-1/2 animate-fade-up">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                <span className="text-gradient">Sobre a</span> RIVE CLOUD
-              </h1>
-              
-              <p className="text-white/80 text-lg mb-6">
-                Fundada em 2023, a RIVE CLOUD nasceu da paixão por games e tecnologia. Nossa missão é democratizar o acesso ao cloud gaming, oferecendo qualidade e inovação para gamers e profissionais.
-              </p>
-              
-              <p className="text-white/80 text-lg mb-6">
-                Criamos uma plataforma que permite a qualquer pessoa, independentemente do hardware que possui, desfrutar dos jogos mais recentes e executar aplicações exigentes sem comprometer a qualidade.
-              </p>
-              
-              <p className="text-white/80 text-lg">
-                Na RIVE CLOUD, combinamos tecnologia de ponta, expertise em redes e paixão por games para oferecer uma experiência excepcional de cloud gaming.
-              </p>
-            </div>
+        <section className="mb-20 max-w-4xl mx-auto animate-fade-up">
+          <h1 className="text-4xl md:text-5xl font-bold mb-10">
+            <span className="text-gradient">Sobre a</span> RIVE CLOUD
+          </h1>
+          
+          <GlassCard className="p-6 md:p-10 max-w-3xl mx-auto">
+            <p className="text-white/80 text-lg mb-6">
+              Fundada em 2023, a RIVE CLOUD nasceu da paixão por games e tecnologia. Nossa missão é democratizar o acesso ao cloud gaming, oferecendo qualidade e inovação para gamers e profissionais.
+            </p>
             
-            <div className="md:w-1/2 animate-fade-up animation-delay-200">
-              <GlassCard className="p-8">
-                <img 
-                  src="https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
-                  alt="Equipe RIVE CLOUD" 
-                  className="rounded-lg shadow-lg w-full h-auto"
-                />
-              </GlassCard>
-            </div>
-          </div>
+            <p className="text-white/80 text-lg mb-6">
+              Criamos uma plataforma que permite a qualquer pessoa, independentemente do hardware que possui, desfrutar dos jogos mais recentes e executar aplicações exigentes sem comprometer a qualidade.
+            </p>
+            
+            <p className="text-white/80 text-lg">
+              Na RIVE CLOUD, combinamos tecnologia de ponta, expertise em redes e paixão por games para oferecer uma experiência excepcional de cloud gaming.
+            </p>
+          </GlassCard>
         </section>
         
         {/* Stats Section */}
-        <section className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <section className="mb-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {stats.map((stat, index) => (
               <GlassCard 
                 key={index} 
@@ -98,15 +86,15 @@ const About = () => {
         </section>
         
         {/* Values Section */}
-        <section className="section-container">
-          <div className="text-center mb-16 animate-fade-up">
-            <h2 className="text-gradient mb-4">Nossos Valores</h2>
+        <section className="mb-20">
+          <div className="text-center mb-10 animate-fade-up">
+            <h2 className="text-gradient mb-4 text-3xl font-bold">Nossos Valores</h2>
             <p className="text-white/70 max-w-2xl mx-auto text-lg">
               Os princípios que guiam nossas decisões e ações no dia a dia.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-4xl mx-auto">
             {values.map((value, index) => (
               <GlassCard 
                 key={index} 
@@ -124,9 +112,9 @@ const About = () => {
         </section>
         
         {/* Mission Section */}
-        <section className="section-container">
-          <div className="glass-panel p-8 md:p-12 max-w-4xl mx-auto text-center animate-fade-up">
-            <h2 className="text-gradient mb-6">Nossa Missão</h2>
+        <section>
+          <div className="glass-panel p-8 md:p-12 max-w-3xl mx-auto text-center animate-fade-up">
+            <h2 className="text-gradient mb-6 text-3xl font-bold">Nossa Missão</h2>
             <p className="text-2xl text-white/90 italic">
               "Democratizar o acesso a jogos e aplicações de alta performance, eliminando barreiras de hardware e conectando pessoas através da tecnologia cloud."
             </p>

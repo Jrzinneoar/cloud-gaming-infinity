@@ -32,7 +32,7 @@ const ParticleBackground = () => {
     window.addEventListener('resize', resizeCanvas);
     
     const particles: Particle[] = [];
-    const particleCount = Math.min(100, window.innerWidth / 15); // Adjust particle count based on screen size
+    const particleCount = Math.min(80, window.innerWidth / 20); // Reduce particle count slightly
     
     // Generate a color in the purple/blue spectrum
     const generateColor = () => {
@@ -47,12 +47,12 @@ const ParticleBackground = () => {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 5 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
+        size: Math.random() * 3 + 1, // Smaller particles
+        speedX: (Math.random() - 0.5) * 0.3, // Slower movement
+        speedY: (Math.random() - 0.5) * 0.3,
         color: generateColor(),
-        alpha: Math.random() * 0.5 + 0.1,
-        alphaSpeed: Math.random() * 0.01 + 0.005
+        alpha: Math.random() * 0.4 + 0.1, // Lower opacity
+        alphaSpeed: Math.random() * 0.005 + 0.002
       });
     }
     
@@ -61,17 +61,17 @@ const ParticleBackground = () => {
       // Purple glow in the bottom left
       const gradient1 = ctx.createRadialGradient(
         canvas.width * 0.2, canvas.height * 0.8, 0,
-        canvas.width * 0.2, canvas.height * 0.8, canvas.width * 0.6
+        canvas.width * 0.2, canvas.height * 0.8, canvas.width * 0.5
       );
-      gradient1.addColorStop(0, 'rgba(139, 92, 246, 0.15)');
+      gradient1.addColorStop(0, 'rgba(139, 92, 246, 0.1)');
       gradient1.addColorStop(1, 'rgba(139, 92, 246, 0)');
       
       // Blue glow in the top right
       const gradient2 = ctx.createRadialGradient(
         canvas.width * 0.8, canvas.height * 0.2, 0,
-        canvas.width * 0.8, canvas.height * 0.2, canvas.width * 0.6
+        canvas.width * 0.8, canvas.height * 0.2, canvas.width * 0.5
       );
-      gradient2.addColorStop(0, 'rgba(59, 130, 246, 0.1)');
+      gradient2.addColorStop(0, 'rgba(59, 130, 246, 0.08)');
       gradient2.addColorStop(1, 'rgba(59, 130, 246, 0)');
       
       return [gradient1, gradient2];
@@ -79,7 +79,8 @@ const ParticleBackground = () => {
     
     // Animation function
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#000000'; // Set black background
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       // Draw background gradients
       const gradients = createGradients(ctx, canvas);
@@ -94,7 +95,7 @@ const ParticleBackground = () => {
       particles.forEach(particle => {
         // Update alpha with pulsing effect
         particle.alpha += particle.alphaSpeed;
-        if (particle.alpha > 0.6 || particle.alpha < 0.1) {
+        if (particle.alpha > 0.5 || particle.alpha < 0.1) {
           particle.alphaSpeed = -particle.alphaSpeed;
         }
         
@@ -105,8 +106,8 @@ const ParticleBackground = () => {
         ctx.fill();
         
         // Add glow effect
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = `${particle.color}, 0.5)`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = `${particle.color}, 0.3)`;
         
         // Update position
         particle.x += particle.speedX;
@@ -120,8 +121,8 @@ const ParticleBackground = () => {
       });
       
       // Draw connecting lines between close particles
-      ctx.strokeStyle = 'rgba(139, 92, 246, 0.15)';
-      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = 'rgba(139, 92, 246, 0.1)';
+      ctx.lineWidth = 0.3;
       
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -129,7 +130,7 @@ const ParticleBackground = () => {
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          if (distance < 100) {
+          if (distance < 80) { // Reduce connection distance
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -151,7 +152,7 @@ const ParticleBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 z-[-1] bg-gradient-to-br from-[#0f0921] to-[#1c1033]"
+      className="fixed inset-0 z-[-1] bg-black"
     />
   );
 };

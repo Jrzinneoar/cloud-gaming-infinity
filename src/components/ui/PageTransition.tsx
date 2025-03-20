@@ -38,8 +38,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     <div
       className={`min-h-screen ${
         transitionStage === 'fadeIn' 
-          ? 'animate-[fade-in_0.5s_ease-out] motion-reduce:animate-none' 
-          : 'animate-[fade-out_0.5s_ease-out] motion-reduce:animate-none'
+          ? 'animate-[fade-in_0.3s_ease-out] motion-reduce:animate-none' 
+          : 'animate-[fade-out_0.2s_ease-out] motion-reduce:animate-none'
       }`}
       onAnimationEnd={handleAnimationEnd}
     >

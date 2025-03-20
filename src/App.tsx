@@ -26,6 +26,7 @@ const App = () => {
   useEffect(() => {
     // Initialize the maintenance bot connection
     const disconnect = initMaintenanceBotConnection();
+    console.log("Maintenance bot connection initialized");
     
     return () => {
       disconnect();
@@ -40,15 +41,15 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              {/* Public routes - always accessible */}
-              <Route path="/" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <Index />} />
-              <Route path="/maintenance" element={<Maintenance />} />
-              
               {/* Admin routes - always accessible */}
               <Route path="/admin" element={<AdminLogin />} />
               <Route path="/admin-panel" element={<AdminPanel />} />
               
+              {/* Maintenance route */}
+              <Route path="/maintenance" element={<Maintenance />} />
+              
               {/* Protected routes - only accessible when maintenance mode is OFF */}
+              <Route path="/" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <Index />} />
               <Route path="/about" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <About />} />
               <Route path="/download" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <DownloadPage />} />
               <Route path="/plans" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <PlansPage />} />
