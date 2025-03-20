@@ -28,7 +28,7 @@ const Index = () => {
       <ParticleBackground />
       <Navbar />
       
-      <main className="overflow-hidden">
+      <main className="overflow-hidden text-center">
         <HeroSection />
         <FeaturesSection />
       </main>

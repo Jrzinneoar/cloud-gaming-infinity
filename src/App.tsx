@@ -15,6 +15,8 @@ import DownloadPage from "./pages/Download";
 import PlansPage from "./pages/Plans";
 import Maintenance from "./pages/Maintenance";
 import NotFound from "./pages/NotFound";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
 
 const queryClient = new QueryClient();
 
@@ -38,13 +40,21 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
+              {/* Public routes - always accessible */}
+              <Route path="/" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <Index />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              
+              {/* Admin routes - always accessible */}
+              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin-panel" element={<AdminPanel />} />
+              
+              {/* Protected routes - only accessible when maintenance mode is OFF */}
               <Route path="/about" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <About />} />
               <Route path="/download" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <DownloadPage />} />
               <Route path="/plans" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <PlansPage />} />
-              <Route path="/maintenance" element={<Maintenance />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
+              
+              {/* Catch-all route */}
+              <Route path="*" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <NotFound />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

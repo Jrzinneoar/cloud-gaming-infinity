@@ -27,7 +27,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 w-full z-50 flex justify-center pointer-events-none pt-6">
       <nav 
-        className={`rounded-full px-4 py-3 transition-all duration-500 pointer-events-auto 
+        className={`rounded-xl px-5 py-3 transition-all duration-500 pointer-events-auto 
           ${scrolled ? 'bg-black/70 backdrop-blur-lg shadow-[0_8px_32px_rgba(139,92,246,0.3)]' : 'bg-black/40 backdrop-blur-md'}
           border border-white/10 animate-fade-in animation-delay-500 hover:shadow-[0_8px_32px_rgba(139,92,246,0.4)] hover:border-rive-purple/30 transition-all`}
       >
@@ -41,7 +41,7 @@ const Navbar = () => {
             <img 
               src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
               alt="Rive Cloud Logo" 
-              className="h-10 w-auto"
+              className="h-10 w-auto animate-pulse-subtle"
             />
           </Link>
 
@@ -51,10 +51,10 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.path}
-                className={`px-4 py-2 rounded-full transition-all duration-300 ${
+                className={`px-4 py-2 rounded-lg transition-all duration-300 ${
                   location.pathname === item.path
-                    ? 'text-white bg-rive-purple shadow-lg shadow-rive-purple/30 hover:shadow-rive-purple/50 animate-pulse-subtle'
-                    : 'text-white/80 hover:text-white hover:bg-white/10 border border-white/10 hover:border-rive-purple/30 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]'
+                    ? 'text-white border border-rive-purple shadow-lg shadow-rive-purple/30 hover:shadow-rive-purple/50 animate-pulse-subtle'
+                    : 'text-white/80 hover:text-white hover:bg-white/10 border border-white/5 hover:border-rive-purple/30 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)]'
                 } hover:scale-105`}
               >
                 {item.name}
@@ -62,10 +62,10 @@ const Navbar = () => {
             ))}
             
             <a
-              href="https://discord.com"
+              href="https://discord.gg/fDPvmrhGcd"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-rive-purple text-white px-4 py-2 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-1 hover:scale-105 animate-pulse-subtle"
+              className="bg-rive-purple text-white px-4 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-1 hover:scale-105 animate-pulse-subtle"
             >
               <img 
                 src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
@@ -76,8 +76,8 @@ const Navbar = () => {
             </a>
             
             <Link
-              to="/maintenance"
-              className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-5 py-2 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
+              to="/admin"
+              className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-5 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
               Dashboard
             </Link>
@@ -108,9 +108,9 @@ const Navbar = () => {
             <Link
               key={item.name}
               to={item.path}
-              className={`text-xl font-medium px-6 py-2 rounded-full ${
+              className={`text-xl font-medium px-6 py-2 rounded-lg ${
                 location.pathname === item.path
-                  ? 'text-white bg-rive-purple shadow-lg shadow-rive-purple/30'
+                  ? 'text-white border border-rive-purple shadow-lg shadow-rive-purple/30'
                   : 'text-white hover:text-rive-purple-light hover:bg-white/5 border border-transparent hover:border-rive-purple/30'
               } transition-all duration-300 hover:scale-105`}
               onClick={() => setIsOpen(false)}
@@ -120,10 +120,10 @@ const Navbar = () => {
           ))}
           
           <a
-            href="https://discord.com"
+            href="https://discord.gg/fDPvmrhGcd"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-rive-purple text-white px-6 py-2 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-2 hover:scale-105"
+            className="bg-rive-purple text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-2 hover:scale-105"
           >
             <img 
               src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
@@ -134,8 +134,8 @@ const Navbar = () => {
           </a>
           
           <Link
-            to="/maintenance"
-            className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-2 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105"
+            to="/admin"
+            className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105"
             onClick={() => setIsOpen(false)}
           >
             Dashboard

@@ -76,6 +76,10 @@
   h4 {
     @apply text-xl sm:text-2xl;
   }
+  
+  section {
+    @apply text-center;
+  }
 }
 
 @layer components {
@@ -92,7 +96,7 @@
   }
   
   .primary-button {
-    @apply bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full font-medium transition-all duration-500 ease-in-out shadow-md hover:shadow-rive-purple/30 hover:scale-105;
+    @apply bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full font-medium transition-all duration-500 ease-in-out shadow-md hover:shadow-rive-purple/30 hover:scale-105 animate-pulse-subtle;
   }
   
   .secondary-button {
@@ -112,7 +116,7 @@
   }
   
   .section-container {
-    @apply container mx-auto px-4 py-16 md:py-24;
+    @apply container mx-auto px-4 py-16 md:py-24 text-center;
   }
   
   .page-padding {
@@ -195,6 +199,28 @@
   .animate-pulse-subtle {
     animation: pulse-subtle 3s ease-in-out infinite;
   }
+  
+  @keyframes rotate-slow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .animate-rotate-slow {
+    animation: rotate-slow 15s linear infinite;
+  }
+  
+  @keyframes bounce-subtle {
+    0%, 100% { 
+      transform: translateY(0); 
+    }
+    50% { 
+      transform: translateY(-5px); 
+    }
+  }
+  
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
 
   .custom-scrollbar {
     scrollbar-width: thin;
@@ -213,5 +239,25 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: theme('colors.rive.purple');
     border-radius: 10px;
+  }
+  
+  /* Text neon effect */
+  .text-neon {
+    text-shadow: 0 0 7px theme('colors.rive.purple'), 
+                 0 0 10px theme('colors.rive.purple'), 
+                 0 0 21px theme('colors.rive.purple');
+  }
+  
+  /* Button glow effect */
+  .btn-neon {
+    box-shadow: 0 0 7px theme('colors.rive.purple'), 
+                0 0 10px theme('colors.rive.purple');
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .btn-neon:hover {
+    box-shadow: 0 0 10px theme('colors.rive.purple'), 
+                0 0 20px theme('colors.rive.purple'), 
+                0 0 30px theme('colors.rive.purple');
   }
 }

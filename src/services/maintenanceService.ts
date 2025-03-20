@@ -1,7 +1,4 @@
 
-// This is a simulation of a bot service that would interact with a real Discord bot
-// In a real implementation, this would connect to a backend API that interacts with Discord
-
 import { create } from 'zustand';
 
 interface MaintenanceState {
@@ -15,8 +12,6 @@ interface MaintenanceState {
   addMaintenanceLog: (message: string, type?: 'info' | 'warning' | 'error') => void;
   estimatedTimeInMinutes: number;
   setEstimatedTime: (minutes: number) => void;
-  // In a real implementation, these would connect to an API
-  // that interacts with a Discord bot
   simulateBotAction: (action: 'enable' | 'disable' | 'log' | 'update-time', value?: any) => void;
 }
 
@@ -67,9 +62,17 @@ export const useMaintenanceStore = create<MaintenanceState>((set) => ({
     })),
   
   setEstimatedTime: (minutes) => 
-    set({
-      estimatedTimeInMinutes: minutes
-    }),
+    set((state) => ({
+      estimatedTimeInMinutes: minutes,
+      maintenanceLogs: [
+        {
+          message: `Tempo estimado atualizado para ${minutes} minutos`,
+          timestamp: new Date(),
+          type: 'info'
+        },
+        ...state.maintenanceLogs
+      ]
+    })),
   
   // This simulates what a Discord bot would do
   simulateBotAction: (action, value) => 
