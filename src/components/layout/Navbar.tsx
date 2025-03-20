@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Cloud, ExternalLink } from 'lucide-react';
+import { Menu, X, ExternalLink } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,10 +24,6 @@ const Navbar = () => {
     { name: 'Planos', path: '/plans' },
   ];
 
-  const externalLinks = [
-    { name: 'Discord', url: 'https://discord.com' },
-  ];
-
   return (
     <nav 
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
@@ -41,8 +37,11 @@ const Navbar = () => {
           className="flex items-center gap-2 text-xl font-bold"
           onClick={() => setIsOpen(false)}
         >
-          <Cloud className="h-8 w-8 text-rive-purple animate-pulse-subtle" />
-          <span className="text-gradient">RIVE CLOUD</span>
+          <img 
+            src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
+            alt="Rive Cloud Logo" 
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -61,18 +60,19 @@ const Navbar = () => {
             </Link>
           ))}
           
-          {externalLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 px-4 py-2 text-white/80 hover:text-white rounded-lg transition-all duration-300 hover:bg-white/5"
-            >
-              {link.name}
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          ))}
+          <a
+            href="https://discord.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 px-4 py-2 text-white/80 hover:text-white rounded-lg transition-all duration-300 hover:bg-white/5"
+          >
+            <img 
+              src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
+              alt="Discord Logo" 
+              className="h-5 w-5"
+            />
+            <span>Discord</span>
+          </a>
           
           <Link
             to="/maintenance"
@@ -117,18 +117,19 @@ const Navbar = () => {
             </Link>
           ))}
           
-          {externalLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-xl font-medium text-white hover:text-rive-purple-light transition-colors duration-300"
-            >
-              {link.name}
-              <ExternalLink className="h-4 w-4" />
-            </a>
-          ))}
+          <a
+            href="https://discord.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-xl font-medium text-white hover:text-rive-purple-light transition-colors duration-300"
+          >
+            <img 
+              src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
+              alt="Discord Logo" 
+              className="h-6 w-6"
+            />
+            <span>Discord</span>
+          </a>
           
           <Link
             to="/maintenance"

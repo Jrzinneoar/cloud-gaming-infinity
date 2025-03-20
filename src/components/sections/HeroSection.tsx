@@ -1,6 +1,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import GlassCard from '../ui/GlassCard';
 
 const HeroSection = () => {
   return (
@@ -9,8 +10,8 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-rive-black-dark via-rive-black to-rive-black-light z-[-1]" />
       
       <div className="absolute w-full h-full overflow-hidden z-[-1]">
-        <div className="absolute -top-[15%] -right-[10%] w-[50%] h-[50%] bg-rive-purple-dark/20 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-[15%] -left-[10%] w-[50%] h-[50%] bg-rive-purple/20 rounded-full blur-[120px]" />
+        <div className="absolute -top-[15%] -right-[10%] w-[50%] h-[50%] bg-rive-purple-dark/20 rounded-full blur-[120px] animate-pulse-subtle" />
+        <div className="absolute -bottom-[15%] -left-[10%] w-[50%] h-[50%] bg-rive-purple/20 rounded-full blur-[120px] animate-pulse-subtle" />
       </div>
       
       <div className="container mx-auto px-4 py-12 md:py-20">
@@ -43,10 +44,32 @@ const HeroSection = () => {
                 Saiba mais
               </Link>
             </div>
+            
+            <div className="pt-6">
+              <div className="flex flex-wrap gap-4">
+                <div className="bg-black/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/5 flex items-center gap-2">
+                  <img 
+                    src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033235240095875/parsec-1330289848677437520.png" 
+                    alt="Parsec" 
+                    className="h-6 w-6" 
+                  />
+                  <span className="text-white/70 text-sm">Compatível com Parsec</span>
+                </div>
+                
+                <div className="bg-black/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/5 flex items-center gap-2">
+                  <img 
+                    src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033398113439764/ef8051ce270059a142fcb0b3e47b1cd4.png" 
+                    alt="Moonlight" 
+                    className="h-6 w-6" 
+                  />
+                  <span className="text-white/70 text-sm">Suporte a Moonlight</span>
+                </div>
+              </div>
+            </div>
           </div>
           
           <div className="md:w-1/2 mt-12 md:mt-0 animate-fade-up animation-delay-500">
-            <div className="glass-panel p-8 md:p-12 relative">
+            <GlassCard className="p-8 md:p-12 relative" intensity="light" hoverEffect={true}>
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-rive-purple/30 to-transparent opacity-20 rounded-2xl" />
               
               <div className="relative z-10">
@@ -57,23 +80,23 @@ const HeroSection = () => {
                 />
                 
                 <div className="mt-8 grid grid-cols-3 gap-4">
-                  <div className="glass-card p-4 text-center">
+                  <GlassCard className="p-4 text-center" intensity="heavy">
                     <h3 className="text-xl font-bold text-rive-purple-light">Ultra-Rápido</h3>
                     <p className="text-white/70 text-sm mt-1">Latência mínima</p>
-                  </div>
+                  </GlassCard>
                   
-                  <div className="glass-card p-4 text-center">
+                  <GlassCard className="p-4 text-center" intensity="heavy">
                     <h3 className="text-xl font-bold text-rive-purple-light">Poderoso</h3>
                     <p className="text-white/70 text-sm mt-1">GPUs de ponta</p>
-                  </div>
+                  </GlassCard>
                   
-                  <div className="glass-card p-4 text-center">
+                  <GlassCard className="p-4 text-center" intensity="heavy">
                     <h3 className="text-xl font-bold text-rive-purple-light">Seguro</h3>
                     <p className="text-white/70 text-sm mt-1">Proteção total</p>
-                  </div>
+                  </GlassCard>
                 </div>
               </div>
-            </div>
+            </GlassCard>
           </div>
         </div>
       </div>

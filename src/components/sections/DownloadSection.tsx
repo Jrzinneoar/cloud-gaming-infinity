@@ -8,13 +8,13 @@ const DownloadSection = () => {
     {
       name: 'Parsec',
       description: 'Software de acesso remoto de alta performance, ideal para jogos e trabalho.',
-      logo: 'https://parsec.app/static/favicon-32x32.png',
+      logo: 'https://cdn.discordapp.com/attachments/1351959002510266384/1352033235240095875/parsec-1330289848677437520.png',
       url: 'https://parsec.app/downloads',
     },
     {
       name: 'Moonlight',
       description: 'Cliente de streaming de código aberto para NVIDIA GameStream.',
-      logo: 'https://moonlight-stream.org/images/logo.png',
+      logo: 'https://cdn.discordapp.com/attachments/1351959002510266384/1352033398113439764/ef8051ce270059a142fcb0b3e47b1cd4.png',
       url: 'https://moonlight-stream.org/',
     },
   ];
@@ -40,7 +40,7 @@ const DownloadSection = () => {
                 <img 
                   src={option.logo} 
                   alt={`${option.name} Logo`} 
-                  className="w-12 h-12 mr-4 rounded object-contain bg-white p-1" 
+                  className="w-12 h-12 mr-4 rounded object-contain bg-white/10 p-1" 
                 />
                 <h3 className="text-xl font-bold text-white">{option.name}</h3>
               </div>

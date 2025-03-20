@@ -8,8 +8,21 @@ import FeaturesSection from '../components/sections/FeaturesSection';
 import DownloadSection from '../components/sections/DownloadSection';
 import PlansSection from '../components/sections/PlansSection';
 import PageTransition from '../components/ui/PageTransition';
+import { useMaintenanceStore } from '../services/maintenanceService';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
+  const { isMaintenanceMode } = useMaintenanceStore();
+  const navigate = useNavigate();
+  
+  // Redirect to maintenance page if maintenance mode is active
+  useEffect(() => {
+    if (isMaintenanceMode) {
+      navigate('/maintenance');
+    }
+  }, [isMaintenanceMode, navigate]);
+
   return (
     <PageTransition>
       <Helmet>
@@ -20,7 +33,7 @@ const Index = () => {
       <ParticleBackground />
       <Navbar />
       
-      <main>
+      <main className="overflow-hidden">
         <HeroSection />
         <FeaturesSection />
         <DownloadSection />
