@@ -28,8 +28,7 @@ const AdminPanel = () => {
     // This is a simple check. In a real app, you'd use a proper auth system
     const isAuthenticated = sessionStorage.getItem('admin-auth') === 'true';
     if (!isAuthenticated) {
-      // Store that we've been here so we can simulate authentication
-      sessionStorage.setItem('admin-auth', 'true');
+      navigate('/admin');
     }
   }, [navigate]);
   
@@ -123,7 +122,7 @@ const AdminPanel = () => {
   ];
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen p-4 relative">
       <Helmet>
         <title>Painel Admin | RIVE CLOUD</title>
         <meta name="robots" content="noindex, nofollow" />
@@ -131,8 +130,8 @@ const AdminPanel = () => {
 
       <ParticleBackground />
       
-      <div className="max-w-6xl mx-auto pt-6">
-        <div className="flex justify-between items-center mb-8 z-10 relative">
+      <div className="max-w-6xl mx-auto pt-6 relative z-10">
+        <div className="flex justify-between items-center mb-8">
           <button 
             onClick={() => navigate('/')} 
             className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
@@ -165,7 +164,7 @@ const AdminPanel = () => {
           </div>
         </div>
         
-        <div className="text-center mb-8 animate-fade-up z-10 relative">
+        <div className="text-center mb-8 animate-fade-up">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
             <span className="text-gradient">Painel</span> Administrativo
           </h1>

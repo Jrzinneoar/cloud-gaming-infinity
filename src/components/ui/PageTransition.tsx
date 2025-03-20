@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useIsMobile } from '../../hooks/use-mobile';
 
 interface PageTransitionProps {
   children: React.ReactNode;
@@ -10,7 +11,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   const location = useLocation();
   const [displayLocation, setDisplayLocation] = useState(location);
   const [transitionStage, setTransitionStage] = useState('fadeIn');
-
+  const isMobile = useIsMobile();
+  
   useEffect(() => {
     if (location.pathname !== displayLocation.pathname) {
       setTransitionStage('fadeOut');
@@ -36,10 +38,10 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
 
   return (
     <div
-      className={`min-h-screen ${
+      className={`${
         transitionStage === 'fadeIn' 
-          ? 'animate-[fade-in_0.3s_ease-out] motion-reduce:animate-none' 
-          : 'animate-[fade-out_0.2s_ease-out] motion-reduce:animate-none'
+          ? `animate-[fade-in_${isMobile ? '0.2s' : '0.3s'}_ease-out] motion-reduce:animate-none` 
+          : `animate-[fade-out_${isMobile ? '0.1s' : '0.2s'}_ease-out] motion-reduce:animate-none`
       }`}
       onAnimationEnd={handleAnimationEnd}
     >

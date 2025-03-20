@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import { useMaintenanceStore, initMaintenanceBotConnection } from "./services/maintenanceService";
@@ -21,8 +21,6 @@ import AdminPanel from "./pages/AdminPanel";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { isMaintenanceMode } = useMaintenanceStore();
-  
   useEffect(() => {
     // Initialize the maintenance bot connection
     const disconnect = initMaintenanceBotConnection();
@@ -48,14 +46,14 @@ const App = () => {
               {/* Maintenance route */}
               <Route path="/maintenance" element={<Maintenance />} />
               
-              {/* Protected routes - only accessible when maintenance mode is OFF */}
-              <Route path="/" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <Index />} />
-              <Route path="/about" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <About />} />
-              <Route path="/download" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <DownloadPage />} />
-              <Route path="/plans" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <PlansPage />} />
+              {/* Protected routes - redirects to maintenance page are handled within each component */}
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/download" element={<DownloadPage />} />
+              <Route path="/plans" element={<PlansPage />} />
               
               {/* Catch-all route */}
-              <Route path="*" element={isMaintenanceMode ? <Navigate to="/maintenance" replace /> : <NotFound />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

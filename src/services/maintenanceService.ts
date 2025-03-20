@@ -16,8 +16,7 @@ interface MaintenanceState {
   simulateBotAction: (action: 'enable' | 'disable' | 'log' | 'update-time', value?: any) => void;
 }
 
-// This store simulates what would normally be handled by a backend service
-// We use persist middleware to store the state in localStorage
+// Use persist middleware to store the state in localStorage
 export const useMaintenanceStore = create<MaintenanceState>()(
   persist(
     (set) => ({
@@ -143,6 +142,11 @@ export const useMaintenanceStore = create<MaintenanceState>()(
     {
       name: 'maintenance-storage', // unique name for localStorage
       getStorage: () => localStorage,
+      partialize: (state) => ({
+        isMaintenanceMode: state.isMaintenanceMode,
+        maintenanceLogs: state.maintenanceLogs,
+        estimatedTimeInMinutes: state.estimatedTimeInMinutes
+      }),
     }
   )
 );
@@ -202,7 +206,6 @@ export const initMaintenanceBotConnection = () => {
   return () => {
     console.log('Disconnecting from maintenance bot (simulated)');
     clearTimeout(timeoutId);
-    // Cleanup would happen here in a real implementation
   };
 };
 

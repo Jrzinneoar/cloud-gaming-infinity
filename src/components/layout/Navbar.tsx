@@ -17,6 +17,11 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'Sobre Nós', path: '/about' },
@@ -87,6 +92,7 @@ const Navbar = () => {
           <button
             className="md:hidden text-white focus:outline-none mr-2 bg-rive-purple/20 p-2 rounded-full hover:bg-rive-purple/30 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle mobile menu"
           >
             {isOpen ? (
               <X className="h-6 w-6" />
@@ -99,9 +105,9 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       <div
-        className={`md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-lg transform transition-transform duration-500 ease-in-out ${
+        className={`md:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        } pointer-events-auto`}
       >
         <div className="flex flex-col h-full justify-center items-center space-y-8 p-8">
           {navItems.map((item) => (
@@ -112,7 +118,7 @@ const Navbar = () => {
                 location.pathname === item.path
                   ? 'text-white border border-rive-purple shadow-lg shadow-rive-purple/30'
                   : 'text-white hover:text-rive-purple-light hover:bg-white/5 border border-transparent hover:border-rive-purple/30'
-              } transition-all duration-300 hover:scale-105`}
+              } transition-all duration-300 hover:scale-105 w-full text-center`}
               onClick={() => setIsOpen(false)}
             >
               {item.name}
@@ -123,7 +129,8 @@ const Navbar = () => {
             href="https://discord.gg/fDPvmrhGcd"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-rive-purple text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-2 hover:scale-105"
+            className="bg-rive-purple text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center justify-center gap-2 hover:scale-105 w-full"
+            onClick={() => setIsOpen(false)}
           >
             <img 
               src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
@@ -135,7 +142,7 @@ const Navbar = () => {
           
           <Link
             to="/admin"
-            className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105"
+            className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105 w-full text-center"
             onClick={() => setIsOpen(false)}
           >
             Dashboard
