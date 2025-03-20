@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import ParticleBackground from '../components/ui/ParticleBackground';
 import GlassCard from '../components/ui/GlassCard';
-import { Clock } from 'lucide-react';
+import { Clock, AlertTriangle } from 'lucide-react';
 import { useMaintenanceStore } from '../services/maintenanceService';
 
 const Maintenance = () => {
@@ -58,25 +58,33 @@ const Maintenance = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-black overflow-hidden">
       <Helmet>
         <title>Manutenção | RIVE CLOUD</title>
         <meta name="description" content="O sistema está em manutenção. Estamos trabalhando para voltar em breve." />
       </Helmet>
 
-      <ParticleBackground />
+      <div className="absolute inset-0 z-0">
+        <ParticleBackground />
+      </div>
       
-      <div className="max-w-xl w-full animate-fade-up">
+      <div className="max-w-xl w-full z-10 animate-fade-up">
         <div className="text-center mb-10">
-          <img 
-            src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
-            alt="Rive Cloud Logo" 
-            className="h-20 mb-6 mx-auto animate-pulse-subtle"
-          />
+          <div className="flex justify-center mb-6">
+            <img 
+              src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
+              alt="Rive Cloud Logo" 
+              className="h-20 mx-auto animate-pulse-subtle"
+            />
+          </div>
           
-          <h1 className="text-4xl font-bold mb-4">
-            <span className="text-gradient">Em</span> Manutenção
-          </h1>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <AlertTriangle className="h-8 w-8 text-yellow-400 animate-pulse" />
+            <h1 className="text-4xl font-bold">
+              <span className="text-gradient">Em</span> Manutenção
+            </h1>
+            <AlertTriangle className="h-8 w-8 text-yellow-400 animate-pulse" />
+          </div>
           
           <p className="text-xl text-white/80 max-w-md mx-auto">
             Estamos atualizando nossos sistemas para melhorar sua experiência. 
@@ -91,32 +99,27 @@ const Maintenance = () => {
           </div>
           
           <div className="grid grid-cols-3 gap-4 text-center mb-8">
-            <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
+            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
               <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                 {formatNumber(timeRemaining.hours)}
               </div>
               <div className="text-white/60 text-sm">Horas</div>
             </div>
             
-            <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
+            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
               <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                 {formatNumber(timeRemaining.minutes)}
               </div>
               <div className="text-white/60 text-sm">Minutos</div>
             </div>
             
-            <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
+            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
               <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                 {formatNumber(timeRemaining.seconds)}
               </div>
               <div className="text-white/60 text-sm">Segundos</div>
             </div>
           </div>
-          
-          <p className="text-white/80 text-center mb-8">
-            Nossa equipe está trabalhando para minimizar o tempo de inatividade.
-            Agradecemos sua paciência.
-          </p>
           
           <div className="text-center">
             <a

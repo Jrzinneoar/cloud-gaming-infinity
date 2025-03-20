@@ -10,6 +10,7 @@ interface MaintenanceState {
     type: 'info' | 'warning' | 'error';
   }[];
   toggleMaintenanceMode: () => void;
+  setMaintenanceMode: (enabled: boolean) => void;
   addMaintenanceLog: (message: string, type?: 'info' | 'warning' | 'error') => void;
   estimatedTimeInMinutes: number;
   setEstimatedTime: (minutes: number) => void;
@@ -41,6 +42,29 @@ export const useMaintenanceStore = create<MaintenanceState>()(
           
           return {
             isMaintenanceMode: newMode,
+            maintenanceLogs: [
+              {
+                message,
+                timestamp: new Date(),
+                type: 'info'
+              },
+              ...state.maintenanceLogs
+            ]
+          };
+        }),
+      
+      setMaintenanceMode: (enabled) => 
+        set((state) => {
+          if (state.isMaintenanceMode === enabled) return state;
+          
+          const message = enabled 
+            ? 'Iniciando modo de manutenção do sistema' 
+            : 'Finalizando modo de manutenção do sistema';
+          
+          console.log('Maintenance mode set to:', enabled);
+          
+          return {
+            isMaintenanceMode: enabled,
             maintenanceLogs: [
               {
                 message,

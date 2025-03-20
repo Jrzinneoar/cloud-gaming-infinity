@@ -7,14 +7,15 @@ import GlassCard from '../components/ui/GlassCard';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useMaintenanceStore } from '../services/maintenanceService';
-import { ArrowLeft, Power, Clock, RefreshCw, Server, Shield } from 'lucide-react';
+import { ArrowLeft, Power, Clock, RefreshCw, Server, Shield, Save } from 'lucide-react';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { 
     isMaintenanceMode, 
-    toggleMaintenanceMode, 
+    toggleMaintenanceMode,
+    setMaintenanceMode,
     maintenanceLogs, 
     addMaintenanceLog,
     estimatedTimeInMinutes,
@@ -69,8 +70,6 @@ const AdminPanel = () => {
       description: `Tempo estimado atualizado para ${newTime} minutos.`,
       variant: "default",
     });
-    
-    addMaintenanceLog(`Tempo estimado atualizado para ${newTime} minutos via painel admin`);
   };
   
   const formatTimestamp = (date: Date) => {
@@ -122,13 +121,15 @@ const AdminPanel = () => {
   ];
 
   return (
-    <div className="min-h-screen p-4 relative">
+    <div className="min-h-screen p-4 relative bg-black overflow-hidden">
       <Helmet>
         <title>Painel Admin | RIVE CLOUD</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
 
-      <ParticleBackground />
+      <div className="absolute inset-0 z-0">
+        <ParticleBackground />
+      </div>
       
       <div className="max-w-6xl mx-auto pt-6 relative z-10">
         <div className="flex justify-between items-center mb-8">
@@ -225,7 +226,8 @@ const AdminPanel = () => {
                       min="1"
                     />
                     <Button onClick={handleUpdateTime} className="bg-rive-purple hover:bg-rive-purple-dark">
-                      Atualizar
+                      <Save className="h-4 w-4 mr-2" />
+                      Salvar
                     </Button>
                   </div>
                 </div>
@@ -249,6 +251,39 @@ const AdminPanel = () => {
                       : 'Ao ativar, os usuários serão redirecionados para a página de manutenção.'}
                   </p>
                 </div>
+                
+                <div className="mt-4">
+                  <p className="text-white/70 mb-2">Definir status manualmente:</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button 
+                      onClick={() => {
+                        setMaintenanceMode(true);
+                        toast({
+                          title: "Modo de manutenção ativado",
+                          description: "O site agora está em modo de manutenção.",
+                          variant: "default",
+                        });
+                      }} 
+                      className="bg-yellow-500 hover:bg-yellow-600"
+                    >
+                      Ativar Manutenção
+                    </Button>
+                    
+                    <Button 
+                      onClick={() => {
+                        setMaintenanceMode(false);
+                        toast({
+                          title: "Modo de manutenção desativado",
+                          description: "O site agora está acessível para todos os usuários.",
+                          variant: "default",
+                        });
+                      }} 
+                      className="bg-green-500 hover:bg-green-600"
+                    >
+                      Desativar Manutenção
+                    </Button>
+                  </div>
+                </div>
               </div>
             </GlassCard>
           </div>
@@ -260,8 +295,8 @@ const AdminPanel = () => {
                 <span>Logs do Sistema</span>
               </h2>
               
-              <div className="max-h-60 overflow-y-auto custom-scrollbar">
-                {maintenanceLogs.slice(0, 10).map((log, index) => (
+              <div className="max-h-80 overflow-y-auto custom-scrollbar">
+                {maintenanceLogs.slice(0, 15).map((log, index) => (
                   <div 
                     key={index} 
                     className="mb-2 p-2 bg-black/20 rounded-lg flex items-start gap-2"
@@ -276,18 +311,6 @@ const AdminPanel = () => {
               </div>
             </GlassCard>
           </div>
-        </div>
-        
-        <div className="animate-fade-up animation-delay-500">
-          <GlassCard>
-            <h2 className="text-xl font-bold mb-4">Informações Adicionais</h2>
-            
-            <div className="text-white/70 space-y-2">
-              <p>• O modo de manutenção redireciona todos os usuários para a página de manutenção.</p>
-              <p>• Apenas administradores podem acessar o painel durante a manutenção.</p>
-              <p>• Todas as ações são registradas nos logs do sistema.</p>
-            </div>
-          </GlassCard>
         </div>
       </div>
     </div>

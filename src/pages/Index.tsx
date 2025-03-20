@@ -24,16 +24,21 @@ const Index = () => {
         <meta name="description" content="Experimente o poder ilimitado do cloud gaming com a RIVE CLOUD. Trabalhe, jogue e renderize com a melhor tecnologia do mercado." />
       </Helmet>
 
-      <div className="relative min-h-screen w-full">
-        <ParticleBackground />
-        <Navbar />
+      <div className="relative min-h-screen w-full bg-black overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <ParticleBackground />
+        </div>
         
-        <main className="relative z-10 pt-32 pb-20 overflow-hidden text-center">
-          <HeroSection />
-          <FeaturesSection />
-        </main>
-        
-        <Footer />
+        <div className="relative z-10">
+          <Navbar />
+          
+          <main className="pt-32 pb-20 overflow-hidden text-center">
+            <HeroSection />
+            <FeaturesSection />
+          </main>
+          
+          <Footer />
+        </div>
       </div>
     </PageTransition>
   );

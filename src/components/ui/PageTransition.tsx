@@ -40,8 +40,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     <div
       className={`${
         transitionStage === 'fadeIn' 
-          ? `animate-[fade-in_${isMobile ? '0.2s' : '0.3s'}_ease-out] motion-reduce:animate-none` 
-          : `animate-[fade-out_${isMobile ? '0.1s' : '0.2s'}_ease-out] motion-reduce:animate-none`
+          ? `animate-[fade-in_${isMobile ? '0.1s' : '0.2s'}_ease-out] motion-reduce:animate-none` 
+          : `animate-[fade-out_${isMobile ? '0.05s' : '0.1s'}_ease-out] motion-reduce:animate-none`
       }`}
       onAnimationEnd={handleAnimationEnd}
     >
