@@ -5,25 +5,17 @@ import { Link } from 'react-router-dom';
 import ParticleBackground from '../components/ui/ParticleBackground';
 import GlassCard from '../components/ui/GlassCard';
 import { Info, Clock, ArrowLeft, AlertTriangle, Terminal, Server, Shield, RefreshCw } from 'lucide-react';
-import { useMaintenanceStore, initMaintenanceBotConnection } from '../services/maintenanceService';
+import { useMaintenanceStore, triggerMaintenanceBot } from '../services/maintenanceService';
+import { Button } from '@/components/ui/button';
 
 const Maintenance = () => {
-  const { maintenanceLogs, estimatedTimeInMinutes, addMaintenanceLog } = useMaintenanceStore();
+  const { maintenanceLogs, estimatedTimeInMinutes, addMaintenanceLog, isMaintenanceMode, toggleMaintenanceMode } = useMaintenanceStore();
   
   const [timeRemaining, setTimeRemaining] = useState({
     hours: Math.floor(estimatedTimeInMinutes / 60),
     minutes: estimatedTimeInMinutes % 60,
     seconds: 0,
   });
-  
-  useEffect(() => {
-    // Connect to the simulated bot
-    const disconnect = initMaintenanceBotConnection();
-    
-    return () => {
-      disconnect();
-    };
-  }, []);
   
   useEffect(() => {
     // Update time remaining when estimated time changes
@@ -115,6 +107,17 @@ const Maintenance = () => {
     },
   ];
 
+  // For testing purposes - this lets us toggle maintenance mode directly
+  const handleToggleMaintenance = () => {
+    toggleMaintenanceMode();
+    addMaintenanceLog(`Modo de manutenção ${isMaintenanceMode ? 'desativado' : 'ativado'} manualmente`);
+  };
+
+  const handleSimulateDiscordBot = (action: 'enable' | 'disable') => {
+    triggerMaintenanceBot(action);
+    addMaintenanceLog(`Bot do Discord ${action === 'enable' ? 'ativou' : 'desativou'} o modo de manutenção`, 'info');
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       <Helmet>
@@ -126,7 +129,7 @@ const Maintenance = () => {
       
       <Link 
         to="/" 
-        className="absolute top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-colors z-50"
+        className="absolute top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-colors z-50 hover:scale-105 duration-300"
       >
         <ArrowLeft className="h-5 w-5" />
         Voltar para Home
@@ -147,11 +150,11 @@ const Maintenance = () => {
           {maintenanceStats.map((stat, index) => (
             <GlassCard 
               key={index} 
-              className="flex items-center gap-4 p-4"
+              className="flex items-center gap-4 p-4 hover:scale-105 transition-all duration-300"
               intensity="light"
               hoverEffect={true}
             >
-              <div className="glass-panel p-3 rounded-full">
+              <div className="glass-panel p-3 rounded-full animate-pulse-subtle">
                 {stat.icon}
               </div>
               <div>
@@ -173,21 +176,21 @@ const Maintenance = () => {
               
               <div className="flex-grow flex flex-col items-center justify-center">
                 <div className="grid grid-cols-3 gap-4 text-center mb-6">
-                  <div className="glass-panel p-4">
+                  <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
                     <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                       {formatNumber(timeRemaining.hours)}
                     </div>
                     <div className="text-white/60 text-sm">Horas</div>
                   </div>
                   
-                  <div className="glass-panel p-4">
+                  <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
                     <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                       {formatNumber(timeRemaining.minutes)}
                     </div>
                     <div className="text-white/60 text-sm">Minutos</div>
                   </div>
                   
-                  <div className="glass-panel p-4">
+                  <div className="glass-panel p-4 hover:scale-105 transition-transform duration-300">
                     <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
                       {formatNumber(timeRemaining.seconds)}
                     </div>
@@ -200,19 +203,46 @@ const Maintenance = () => {
                   Agradecemos sua paciência.
                 </p>
                 
-                <a
-                  href="https://discord.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="primary-button mt-8 flex items-center"
-                >
-                  <img 
-                    src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
-                    alt="Discord Logo" 
-                    className="h-5 w-5 mr-2"
-                  />
-                  Acompanhe no Discord
-                </a>
+                <div className="mt-8 space-y-4">
+                  <a
+                    href="https://discord.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:scale-105 flex items-center justify-center"
+                  >
+                    <img 
+                      src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
+                      alt="Discord Logo" 
+                      className="h-5 w-5 mr-2"
+                    />
+                    <span>Acompanhe no Discord</span>
+                  </a>
+                  
+                  <div className="flex justify-center space-x-4">
+                    {/* Only for demonstration - these buttons simulate the Discord bot */}
+                    <Button
+                      variant="outline"
+                      onClick={() => handleSimulateDiscordBot('enable')}
+                      className="bg-black/30 text-white border-rive-purple/30 hover:bg-black/50 hover:text-white"
+                    >
+                      Simular Bot (Ativar)
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => handleSimulateDiscordBot('disable')}
+                      className="bg-black/30 text-white border-rive-purple/30 hover:bg-black/50 hover:text-white"
+                    >
+                      Simular Bot (Desativar)
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={handleToggleMaintenance}
+                      className="bg-black/30 text-white border-rive-purple/30 hover:bg-black/50 hover:text-white"
+                    >
+                      {isMaintenanceMode ? 'Desativar Manutenção' : 'Ativar Manutenção'}
+                    </Button>
+                  </div>
+                </div>
               </div>
             </GlassCard>
           </div>
@@ -228,7 +258,7 @@ const Maintenance = () => {
                 {maintenanceLogs.map((log, index) => (
                   <div 
                     key={index} 
-                    className="flex items-start gap-3 bg-black/20 p-3 rounded-lg"
+                    className="flex items-start gap-3 bg-black/20 p-3 rounded-lg hover:bg-black/30 transition-colors duration-300"
                   >
                     {getLogIcon(log.type)}
                     <div className="flex-grow">
@@ -240,14 +270,15 @@ const Maintenance = () => {
               </div>
               
               <div className="mt-4 text-center">
-                <button 
-                  className="glass-button px-4 py-2 text-white/80 hover:text-white text-sm"
+                <Button 
+                  variant="outline"
+                  className="bg-black/30 text-white border-rive-purple/30 hover:bg-black/50 hover:text-white hover:border-rive-purple/50 transition-all duration-300 hover:scale-105"
                   onClick={() => {
                     addMaintenanceLog('Atualização de progresso: Otimizando servidores');
                   }}
                 >
                   Simular atualização do bot
-                </button>
+                </Button>
               </div>
             </GlassCard>
           </div>

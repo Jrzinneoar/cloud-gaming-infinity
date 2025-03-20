@@ -6,26 +6,17 @@ import ParticleBackground from '../components/ui/ParticleBackground';
 import HeroSection from '../components/sections/HeroSection';
 import FeaturesSection from '../components/sections/FeaturesSection';
 import PageTransition from '../components/ui/PageTransition';
-import { useMaintenanceStore, initMaintenanceBotConnection } from '../services/maintenanceService';
+import { useMaintenanceStore } from '../services/maintenanceService';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const Index = () => {
   const { isMaintenanceMode } = useMaintenanceStore();
-  const navigate = useNavigate();
   
-  // Redirect to maintenance page if maintenance mode is active
-  useEffect(() => {
-    if (isMaintenanceMode) {
-      navigate('/maintenance');
-    }
-  }, [isMaintenanceMode, navigate]);
-
-  // Initialize maintenance bot connection
-  useEffect(() => {
-    const cleanupBot = initMaintenanceBotConnection();
-    return () => cleanupBot();
-  }, []);
+  // If maintenance mode is active, redirect to maintenance page
+  if (isMaintenanceMode) {
+    return <Navigate to="/maintenance" replace />;
+  }
 
   return (
     <PageTransition>

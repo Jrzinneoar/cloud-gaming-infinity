@@ -37,9 +37,9 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section className="section-container" id="features">
+    <section className="section-container text-center" id="features">
       <div className="text-center mb-16 animate-fade-up">
-        <h2 className="text-gradient mb-4">Recursos Exclusivos</h2>
+        <h2 className="text-gradient mb-4 text-4xl font-bold">Recursos Exclusivos</h2>
         <p className="text-white/70 max-w-2xl mx-auto text-lg">
           A RIVE CLOUD oferece uma experiência completa de cloud gaming com os melhores recursos do mercado.
         </p>
@@ -50,10 +50,10 @@ const FeaturesSection = () => {
           <GlassCard 
             key={index} 
             hoverEffect={true}
-            className={`animate-fade-up animation-delay-${index * 100} transform transition-all duration-500 hover:scale-105`}
+            className={`animate-fade-up animation-delay-${index * 100} transform transition-all duration-500 hover:scale-105 hover:shadow-rive-purple/20`}
           >
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-4 p-3 bg-gradient-to-br from-rive-purple/20 to-transparent rounded-full">
+            <div className="flex flex-col items-center text-center p-6">
+              <div className="mb-4 p-4 bg-gradient-to-br from-rive-purple/20 to-transparent rounded-full border border-rive-purple/10 shadow-inner shadow-rive-purple/5 animate-pulse-subtle">
                 {feature.icon}
               </div>
               <h3 className="text-xl font-bold mb-2 text-white">{feature.title}</h3>

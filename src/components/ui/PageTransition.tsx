@@ -30,13 +30,16 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     if (transitionStage === 'fadeOut') {
       setTransitionStage('fadeIn');
       setDisplayLocation(location);
+      window.scrollTo(0, 0); // Scroll to top on page change
     }
   };
 
   return (
     <div
       className={`min-h-screen ${
-        transitionStage === 'fadeIn' ? 'animate-fade-in' : 'animate-fade-out'
+        transitionStage === 'fadeIn' 
+          ? 'animate-[fade-in_0.5s_ease-out] motion-reduce:animate-none' 
+          : 'animate-[fade-out_0.5s_ease-out] motion-reduce:animate-none'
       }`}
       onAnimationEnd={handleAnimationEnd}
     >
