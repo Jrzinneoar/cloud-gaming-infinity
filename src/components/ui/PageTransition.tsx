@@ -20,7 +20,6 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
   }, [location, displayLocation]);
 
   useEffect(() => {
-    // Add a class to the body to prevent scrolling during transitions
     if (transitionStage === 'fadeOut') {
       document.body.classList.add('transition-active');
     } else {
@@ -32,12 +31,12 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     if (transitionStage === 'fadeOut') {
       setTransitionStage('fadeIn');
       setDisplayLocation(location);
-      window.scrollTo(0, 0); // Scroll to top on page change
+      window.scrollTo(0, 0);
     }
   };
 
-  // Use slightly faster transitions overall
-  const duration = isMobile ? '0.15s' : '0.25s';
+  // Use faster, more subtle transitions
+  const duration = isMobile ? '0.12s' : '0.2s';
 
   return (
     <div
