@@ -24,9 +24,9 @@ const App = () => {
   const { isMaintenanceMode } = useMaintenanceStore();
 
   useEffect(() => {
-    // Initialize the maintenance bot connection
+    // Initialize the maintenance service
     const disconnect = initMaintenanceBotConnection();
-    console.log("Maintenance bot connection initialized");
+    console.log("Maintenance service initialized");
     
     return () => {
       disconnect();

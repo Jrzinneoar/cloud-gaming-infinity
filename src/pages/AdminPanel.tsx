@@ -7,7 +7,8 @@ import GlassCard from '../components/ui/GlassCard';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { useMaintenanceStore } from '../services/maintenanceService';
-import { ArrowLeft, Power, Clock, RefreshCw, Server, Shield, Save } from 'lucide-react';
+import { DB, Plan } from '../services/database';
+import { ArrowLeft, Power, Clock, RefreshCw, Server, Shield, Save, Plus, Trash, Edit, Check, X } from 'lucide-react';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -23,6 +24,24 @@ const AdminPanel = () => {
   } = useMaintenanceStore();
   
   const [minutes, setMinutes] = useState(estimatedTimeInMinutes.toString());
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [isAddingPlan, setIsAddingPlan] = useState(false);
+  const [editingPlanId, setEditingPlanId] = useState<string | null>(null);
+  const [newPlan, setNewPlan] = useState<Omit<Plan, 'id'>>({
+    name: '',
+    price: '',
+    period: '/mês',
+    description: '',
+    features: [''],
+    isPopular: false,
+    buttonText: 'Comprar Agora',
+    buttonUrl: 'https://discord.gg/fDPvmrhGcd',
+  });
+  
+  // Load plans from database
+  useEffect(() => {
+    setPlans(DB.getPlans());
+  }, []);
   
   // Check if user is authenticated (in a real app this would be more robust)
   useEffect(() => {
@@ -69,6 +88,191 @@ const AdminPanel = () => {
       title: "Tempo atualizado",
       description: `Tempo estimado atualizado para ${newTime} minutos.`,
       variant: "default",
+    });
+  };
+  
+  const handleAddPlan = () => {
+    try {
+      // Validate
+      if (!newPlan.name || !newPlan.price) {
+        toast({
+          title: "Erro ao adicionar plano",
+          description: "Nome e preço são obrigatórios.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Filter out empty features
+      const filteredFeatures = newPlan.features.filter(f => f.trim() !== '');
+      if (filteredFeatures.length === 0) {
+        filteredFeatures.push('Recurso básico');
+      }
+      
+      const planToAdd = {
+        ...newPlan,
+        features: filteredFeatures
+      };
+      
+      const addedPlan = DB.addPlan(planToAdd);
+      setPlans(DB.getPlans());
+      
+      toast({
+        title: "Plano adicionado",
+        description: `O plano ${addedPlan.name} foi adicionado com sucesso.`,
+        variant: "default",
+      });
+      
+      // Reset form
+      setIsAddingPlan(false);
+      setNewPlan({
+        name: '',
+        price: '',
+        period: '/mês',
+        description: '',
+        features: [''],
+        isPopular: false,
+        buttonText: 'Comprar Agora',
+        buttonUrl: 'https://discord.gg/fDPvmrhGcd',
+      });
+    } catch (error) {
+      toast({
+        title: "Erro ao adicionar plano",
+        description: "Ocorreu um erro ao adicionar o plano.",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const handleUpdatePlan = () => {
+    if (!editingPlanId) return;
+    
+    try {
+      // Validate
+      if (!newPlan.name || !newPlan.price) {
+        toast({
+          title: "Erro ao atualizar plano",
+          description: "Nome e preço são obrigatórios.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Filter out empty features
+      const filteredFeatures = newPlan.features.filter(f => f.trim() !== '');
+      if (filteredFeatures.length === 0) {
+        filteredFeatures.push('Recurso básico');
+      }
+      
+      const planToUpdate = {
+        ...newPlan,
+        features: filteredFeatures
+      };
+      
+      const updatedPlan = DB.updatePlan(editingPlanId, planToUpdate);
+      if (updatedPlan) {
+        setPlans(DB.getPlans());
+        
+        toast({
+          title: "Plano atualizado",
+          description: `O plano ${updatedPlan.name} foi atualizado com sucesso.`,
+          variant: "default",
+        });
+        
+        // Reset form
+        setEditingPlanId(null);
+        setNewPlan({
+          name: '',
+          price: '',
+          period: '/mês',
+          description: '',
+          features: [''],
+          isPopular: false,
+          buttonText: 'Comprar Agora',
+          buttonUrl: 'https://discord.gg/fDPvmrhGcd',
+        });
+      } else {
+        toast({
+          title: "Erro ao atualizar plano",
+          description: "Plano não encontrado.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro ao atualizar plano",
+        description: "Ocorreu um erro ao atualizar o plano.",
+        variant: "destructive",
+      });
+    }
+  };
+  
+  const handleDeletePlan = (id: string) => {
+    const plan = plans.find(p => p.id === id);
+    
+    if (window.confirm(`Tem certeza que deseja excluir o plano ${plan?.name}?`)) {
+      const deleted = DB.deletePlan(id);
+      
+      if (deleted) {
+        setPlans(DB.getPlans());
+        
+        toast({
+          title: "Plano excluído",
+          description: `O plano foi excluído com sucesso.`,
+          variant: "default",
+        });
+      } else {
+        toast({
+          title: "Erro ao excluir plano",
+          description: "Ocorreu um erro ao excluir o plano.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+  
+  const handleEditPlan = (id: string) => {
+    const plan = plans.find(p => p.id === id);
+    if (!plan) return;
+    
+    setEditingPlanId(id);
+    setNewPlan({
+      name: plan.name,
+      price: plan.price,
+      period: plan.period,
+      description: plan.description,
+      features: [...plan.features],
+      isPopular: plan.isPopular,
+      buttonText: plan.buttonText,
+      buttonUrl: plan.buttonUrl,
+    });
+  };
+  
+  const handleAddFeature = () => {
+    setNewPlan({
+      ...newPlan,
+      features: [...newPlan.features, '']
+    });
+  };
+  
+  const handleFeatureChange = (index: number, value: string) => {
+    const features = [...newPlan.features];
+    features[index] = value;
+    setNewPlan({
+      ...newPlan,
+      features
+    });
+  };
+  
+  const handleRemoveFeature = (index: number) => {
+    const features = [...newPlan.features];
+    features.splice(index, 1);
+    if (features.length === 0) {
+      features.push('');
+    }
+    setNewPlan({
+      ...newPlan,
+      features
     });
   };
   
@@ -311,6 +515,234 @@ const AdminPanel = () => {
               </div>
             </GlassCard>
           </div>
+        </div>
+        
+        {/* Plans Management Section */}
+        <div className="mb-8 animate-fade-up animation-delay-500">
+          <GlassCard>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold flex items-center gap-2">
+                <Server className="h-5 w-5 text-rive-purple" />
+                <span>Gerenciamento de Planos</span>
+              </h2>
+              
+              <Button 
+                onClick={() => {
+                  if (editingPlanId) {
+                    setEditingPlanId(null);
+                    setNewPlan({
+                      name: '',
+                      price: '',
+                      period: '/mês',
+                      description: '',
+                      features: [''],
+                      isPopular: false,
+                      buttonText: 'Comprar Agora',
+                      buttonUrl: 'https://discord.gg/fDPvmrhGcd',
+                    });
+                  } else {
+                    setIsAddingPlan(!isAddingPlan);
+                  }
+                }}
+                className="bg-rive-purple hover:bg-rive-purple-dark"
+              >
+                {editingPlanId ? (
+                  <>
+                    <X className="h-4 w-4 mr-2" />
+                    Cancelar Edição
+                  </>
+                ) : isAddingPlan ? (
+                  <>
+                    <X className="h-4 w-4 mr-2" />
+                    Cancelar
+                  </>
+                ) : (
+                  <>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Adicionar Plano
+                  </>
+                )}
+              </Button>
+            </div>
+            
+            {/* Add/Edit Plan Form */}
+            {(isAddingPlan || editingPlanId) && (
+              <div className="mb-6 p-4 border border-rive-purple/30 rounded-lg bg-black/20">
+                <h3 className="text-lg font-semibold mb-4">
+                  {editingPlanId ? 'Editar Plano' : 'Adicionar Novo Plano'}
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-white/70 mb-1 block">Nome do Plano</label>
+                    <input
+                      type="text"
+                      value={newPlan.name}
+                      onChange={(e) => setNewPlan({...newPlan, name: e.target.value})}
+                      className="glass-input w-full"
+                      placeholder="Ex: Básico"
+                    />
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="text-white/70 mb-1 block">Preço</label>
+                      <input
+                        type="text"
+                        value={newPlan.price}
+                        onChange={(e) => setNewPlan({...newPlan, price: e.target.value})}
+                        className="glass-input w-full"
+                        placeholder="Ex: R$ 29,90"
+                      />
+                    </div>
+                    
+                    <div className="w-1/3">
+                      <label className="text-white/70 mb-1 block">Período</label>
+                      <input
+                        type="text"
+                        value={newPlan.period}
+                        onChange={(e) => setNewPlan({...newPlan, period: e.target.value})}
+                        className="glass-input w-full"
+                        placeholder="Ex: /mês"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <label className="text-white/70 mb-1 block">Descrição</label>
+                  <input
+                    type="text"
+                    value={newPlan.description}
+                    onChange={(e) => setNewPlan({...newPlan, description: e.target.value})}
+                    className="glass-input w-full"
+                    placeholder="Breve descrição do plano"
+                  />
+                </div>
+                
+                <div className="mb-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <label className="text-white/70">Recursos</label>
+                    <Button
+                      onClick={handleAddFeature}
+                      variant="outline"
+                      size="sm"
+                      className="h-8 border-rive-purple/30 text-white"
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Adicionar
+                    </Button>
+                  </div>
+                  
+                  {newPlan.features.map((feature, index) => (
+                    <div key={index} className="flex gap-2 mb-2">
+                      <input
+                        type="text"
+                        value={feature}
+                        onChange={(e) => handleFeatureChange(index, e.target.value)}
+                        className="glass-input flex-1"
+                        placeholder="Ex: 10GB de armazenamento"
+                      />
+                      
+                      <Button
+                        onClick={() => handleRemoveFeature(index)}
+                        variant="outline"
+                        size="sm"
+                        className="border-red-500/30 hover:bg-red-500/10 text-red-400"
+                        disabled={newPlan.features.length <= 1}
+                      >
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex items-center mb-4">
+                  <input
+                    type="checkbox"
+                    id="isPopular"
+                    checked={newPlan.isPopular}
+                    onChange={(e) => setNewPlan({...newPlan, isPopular: e.target.checked})}
+                    className="mr-2"
+                  />
+                  <label htmlFor="isPopular" className="text-white/70">Marcar como Mais Popular</label>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="text-white/70 mb-1 block">Texto do Botão</label>
+                    <input
+                      type="text"
+                      value={newPlan.buttonText}
+                      onChange={(e) => setNewPlan({...newPlan, buttonText: e.target.value})}
+                      className="glass-input w-full"
+                      placeholder="Ex: Comprar Agora"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-white/70 mb-1 block">URL do Botão</label>
+                    <input
+                      type="text"
+                      value={newPlan.buttonUrl}
+                      onChange={(e) => setNewPlan({...newPlan, buttonUrl: e.target.value})}
+                      className="glass-input w-full"
+                      placeholder="Ex: https://discord.gg/seu-servidor"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex justify-end">
+                  <Button
+                    onClick={editingPlanId ? handleUpdatePlan : handleAddPlan}
+                    className="bg-green-500 hover:bg-green-600"
+                  >
+                    <Check className="h-4 w-4 mr-2" />
+                    {editingPlanId ? 'Salvar Alterações' : 'Adicionar Plano'}
+                  </Button>
+                </div>
+              </div>
+            )}
+            
+            {/* Plans List */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {plans.map((plan) => (
+                <div key={plan.id} className="border border-white/10 rounded-lg p-4 bg-black/20">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-lg font-semibold">{plan.name}</h3>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEditPlan(plan.id)}
+                        className="text-rive-purple hover:text-rive-purple-light"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDeletePlan(plan.id)}
+                        className="text-red-400 hover:text-red-300"
+                      >
+                        <Trash className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <p className="text-xl font-bold">{plan.price}<span className="text-sm text-white/70">{plan.period}</span></p>
+                  <p className="text-white/70 text-sm mb-2">{plan.description}</p>
+                  
+                  {plan.isPopular && (
+                    <div className="text-xs bg-rive-purple text-white px-2 py-1 rounded-full inline-block mb-2">
+                      Popular
+                    </div>
+                  )}
+                  
+                  <div className="text-sm text-white/80">
+                    <p>Recursos: {plan.features.length}</p>
+                    <p className="truncate">Botão: {plan.buttonText}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </GlassCard>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Info, Download, CreditCard, Discord, LayoutDashboard } from 'lucide-react';
+import { Menu, X, Home, Info, Download, CreditCard, MessageSquare, LayoutDashboard } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,17 +73,19 @@ const Navbar = () => {
               rel="noopener noreferrer"
               className="bg-rive-purple text-white px-4 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center gap-1 hover:scale-105 animate-pulse-subtle"
             >
-              <Discord className="h-4 w-4 mr-1" />
+              <MessageSquare className="h-4 w-4 mr-1" />
               <span>Discord</span>
             </a>
             
-            <Link
-              to="/admin"
+            <a
+              href="https://discord.gg/fDPvmrhGcd"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-5 py-2 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
             >
               <LayoutDashboard className="h-4 w-4 mr-1" />
               Dashboard
-            </Link>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -131,18 +133,20 @@ const Navbar = () => {
             className="bg-rive-purple text-white px-6 py-3 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:bg-rive-purple-dark flex items-center justify-center gap-2 hover:scale-105 w-full text-xl"
             onClick={() => setIsOpen(false)}
           >
-            <Discord className="h-5 w-5 mr-2" />
+            <MessageSquare className="h-5 w-5 mr-2" />
             <span>Discord</span>
           </a>
           
-          <Link
-            to="/admin"
+          <a
+            href="https://discord.gg/fDPvmrhGcd"
+            target="_blank"
+            rel="noopener noreferrer"
             className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-lg shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/50 transition-all duration-300 hover:scale-105 w-full text-center text-xl flex items-center justify-center"
             onClick={() => setIsOpen(false)}
           >
             <LayoutDashboard className="h-5 w-5 mr-2" />
             Dashboard
-          </Link>
+          </a>
         </div>
       </div>
     </div>

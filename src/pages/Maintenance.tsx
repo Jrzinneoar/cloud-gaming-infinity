@@ -5,6 +5,7 @@ import ParticleBackground from '../components/ui/ParticleBackground';
 import GlassCard from '../components/ui/GlassCard';
 import { Clock, AlertTriangle } from 'lucide-react';
 import { useMaintenanceStore } from '../services/maintenanceService';
+import { DB } from '../services/database';
 
 const Maintenance = () => {
   const { estimatedTimeInMinutes } = useMaintenanceStore();
@@ -16,13 +17,16 @@ const Maintenance = () => {
   });
   
   useEffect(() => {
+    // Get the latest maintenance settings from the database
+    const dbSettings = DB.getMaintenanceSettings();
+    
     // Update time remaining when estimated time changes
     setTimeRemaining({
-      hours: Math.floor(estimatedTimeInMinutes / 60),
-      minutes: estimatedTimeInMinutes % 60,
+      hours: Math.floor(dbSettings.estimatedTimeMinutes / 60),
+      minutes: dbSettings.estimatedTimeMinutes % 60,
       seconds: 0,
     });
-  }, [estimatedTimeInMinutes]);
+  }, []);
   
   useEffect(() => {
     const interval = setInterval(() => {

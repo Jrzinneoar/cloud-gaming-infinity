@@ -36,12 +36,15 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     }
   };
 
+  // Use much faster transitions on mobile
+  const duration = isMobile ? '0.05s' : '0.15s';
+
   return (
     <div
       className={`${
         transitionStage === 'fadeIn' 
-          ? `animate-[fade-in_${isMobile ? '0.1s' : '0.2s'}_ease-out] motion-reduce:animate-none` 
-          : `animate-[fade-out_${isMobile ? '0.05s' : '0.1s'}_ease-out] motion-reduce:animate-none`
+          ? `animate-[fade-in_${duration}_ease-out] motion-reduce:animate-none` 
+          : `animate-[fade-out_${duration}_ease-out] motion-reduce:animate-none`
       }`}
       onAnimationEnd={handleAnimationEnd}
     >

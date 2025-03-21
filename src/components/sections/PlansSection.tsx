@@ -1,58 +1,16 @@
 
+import { useEffect, useState } from 'react';
 import { Check } from 'lucide-react';
 import GlassCard from '../ui/GlassCard';
+import { DB, Plan } from '../../services/database';
 
 const PlansSection = () => {
-  const plans = [
-    {
-      name: 'Básico',
-      price: 'R$ 29,90',
-      period: '/mês',
-      description: 'Ideal para jogadores casuais.',
-      features: [
-        'Latência reduzida',
-        '10 horas de jogo/mês',
-        'RTX 2060 Super',
-        'Armazenamento de 100GB',
-        'Suporte por Discord',
-      ],
-      isPopular: false,
-      buttonText: 'Comprar Agora',
-    },
-    {
-      name: 'Premium',
-      price: 'R$ 59,90',
-      period: '/mês',
-      description: 'Nosso plano mais popular.',
-      features: [
-        'Latência ultrabaixa',
-        '50 horas de jogo/mês',
-        'RTX 3080',
-        'Armazenamento de 250GB',
-        'Suporte prioritário',
-        'Jogos pré-instalados',
-      ],
-      isPopular: true,
-      buttonText: 'Comprar Agora',
-    },
-    {
-      name: 'Ultimate',
-      price: 'R$ 99,90',
-      period: '/mês',
-      description: 'Para os gamers mais exigentes.',
-      features: [
-        'Latência mínima garantida',
-        'Horas ilimitadas',
-        'RTX 4090',
-        'Armazenamento de 500GB',
-        'Suporte dedicado 24/7',
-        'Todos os jogos pré-instalados',
-        'Acesso antecipado a novidades',
-      ],
-      isPopular: false,
-      buttonText: 'Comprar Agora',
-    },
-  ];
+  const [plans, setPlans] = useState<Plan[]>([]);
+  
+  useEffect(() => {
+    // Load plans from database
+    setPlans(DB.getPlans());
+  }, []);
 
   return (
     <section className="section-container" id="plans">
@@ -66,7 +24,7 @@ const PlansSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {plans.map((plan, index) => (
           <div 
-            key={index}
+            key={plan.id}
             className={`animate-fade-up animation-delay-${index * 200}`}
           >
             <GlassCard 
@@ -104,7 +62,7 @@ const PlansSection = () => {
               </div>
               
               <a
-                href="https://discord.com"
+                href={plan.buttonUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`w-full py-3 text-center rounded-lg font-medium transition-all ${

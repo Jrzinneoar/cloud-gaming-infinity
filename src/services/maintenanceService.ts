@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { DB } from './database';
 
 interface MaintenanceState {
   isMaintenanceMode: boolean;
@@ -14,227 +14,151 @@ interface MaintenanceState {
   addMaintenanceLog: (message: string, type?: 'info' | 'warning' | 'error') => void;
   estimatedTimeInMinutes: number;
   setEstimatedTime: (minutes: number) => void;
-  simulateBotAction: (action: 'enable' | 'disable' | 'log' | 'update-time', value?: any) => void;
 }
 
-// Use persist middleware to store the state in localStorage
-export const useMaintenanceStore = create<MaintenanceState>()(
-  persist(
-    (set) => ({
-      isMaintenanceMode: false,
-      maintenanceLogs: [
-        { 
-          message: 'Sistema pronto para manutenção', 
-          timestamp: new Date(), 
-          type: 'info' 
-        }
-      ],
-      estimatedTimeInMinutes: 90, // 1.5 hours default
+// Load initial state from database
+const initialState = DB.getMaintenanceSettings();
+
+export const useMaintenanceStore = create<MaintenanceState>()((set) => ({
+  isMaintenanceMode: initialState.isActive,
+  estimatedTimeInMinutes: initialState.estimatedTimeMinutes,
+  maintenanceLogs: initialState.logs.map(log => ({
+    message: log.message,
+    timestamp: new Date(log.timestamp),
+    type: log.type
+  })),
+  
+  toggleMaintenanceMode: () => 
+    set((state) => {
+      const newMode = !state.isMaintenanceMode;
+      const message = newMode 
+        ? 'Iniciando modo de manutenção do sistema' 
+        : 'Finalizando modo de manutenção do sistema';
       
-      toggleMaintenanceMode: () => 
-        set((state) => {
-          const newMode = !state.isMaintenanceMode;
-          const message = newMode 
-            ? 'Iniciando modo de manutenção do sistema' 
-            : 'Finalizando modo de manutenção do sistema';
-          
-          console.log('Maintenance mode toggled:', newMode);
-          
-          return {
-            isMaintenanceMode: newMode,
-            maintenanceLogs: [
-              {
-                message,
-                timestamp: new Date(),
-                type: 'info'
-              },
-              ...state.maintenanceLogs
-            ]
-          };
-        }),
+      // Save to database
+      const settings = DB.getMaintenanceSettings();
+      settings.isActive = newMode;
+      DB.saveMaintenanceSettings(settings);
+      DB.addMaintenanceLog(message);
       
-      setMaintenanceMode: (enabled) => 
-        set((state) => {
-          if (state.isMaintenanceMode === enabled) return state;
-          
-          const message = enabled 
-            ? 'Iniciando modo de manutenção do sistema' 
-            : 'Finalizando modo de manutenção do sistema';
-          
-          console.log('Maintenance mode set to:', enabled);
-          
-          return {
-            isMaintenanceMode: enabled,
-            maintenanceLogs: [
-              {
-                message,
-                timestamp: new Date(),
-                type: 'info'
-              },
-              ...state.maintenanceLogs
-            ]
-          };
-        }),
-      
-      addMaintenanceLog: (message, type = 'info') => 
-        set((state) => ({
-          maintenanceLogs: [
-            {
-              message,
-              timestamp: new Date(),
-              type
-            },
-            ...state.maintenanceLogs
-          ]
-        })),
-      
-      setEstimatedTime: (minutes) => 
-        set((state) => ({
-          estimatedTimeInMinutes: minutes,
-          maintenanceLogs: [
-            {
-              message: `Tempo estimado atualizado para ${minutes} minutos`,
-              timestamp: new Date(),
-              type: 'info'
-            },
-            ...state.maintenanceLogs
-          ]
-        })),
-      
-      // This simulates what a Discord bot would do
-      simulateBotAction: (action, value) => 
-        set((state) => {
-          console.log('Bot action triggered:', action, value);
-          
-          switch (action) {
-            case 'enable':
-              return {
-                isMaintenanceMode: true,
-                maintenanceLogs: [
-                  {
-                    message: 'Modo de manutenção ativado via Discord',
-                    timestamp: new Date(),
-                    type: 'info'
-                  },
-                  ...state.maintenanceLogs
-                ]
-              };
-            
-            case 'disable':
-              return {
-                isMaintenanceMode: false,
-                maintenanceLogs: [
-                  {
-                    message: 'Modo de manutenção desativado via Discord',
-                    timestamp: new Date(),
-                    type: 'info'
-                  },
-                  ...state.maintenanceLogs
-                ]
-              };
-            
-            case 'log':
-              return {
-                maintenanceLogs: [
-                  {
-                    message: value || 'Atualização de status do sistema via Discord',
-                    timestamp: new Date(),
-                    type: 'info'
-                  },
-                  ...state.maintenanceLogs
-                ]
-              };
-            
-            case 'update-time':
-              return {
-                estimatedTimeInMinutes: value || state.estimatedTimeInMinutes,
-                maintenanceLogs: [
-                  {
-                    message: `Tempo estimado atualizado para ${value || state.estimatedTimeInMinutes} minutos via Discord`,
-                    timestamp: new Date(),
-                    type: 'info'
-                  },
-                  ...state.maintenanceLogs
-                ]
-              };
-            
-            default:
-              return state;
-          }
-        })
+      return {
+        isMaintenanceMode: newMode,
+        maintenanceLogs: [
+          {
+            message,
+            timestamp: new Date(),
+            type: 'info'
+          },
+          ...state.maintenanceLogs
+        ]
+      };
     }),
-    {
-      name: 'maintenance-storage', // unique name for localStorage
-      getStorage: () => localStorage,
-      partialize: (state) => ({
-        isMaintenanceMode: state.isMaintenanceMode,
-        maintenanceLogs: state.maintenanceLogs,
-        estimatedTimeInMinutes: state.estimatedTimeInMinutes
-      }),
+  
+  setMaintenanceMode: (enabled) => 
+    set((state) => {
+      if (state.isMaintenanceMode === enabled) return state;
+      
+      const message = enabled 
+        ? 'Iniciando modo de manutenção do sistema' 
+        : 'Finalizando modo de manutenção do sistema';
+      
+      // Save to database
+      const settings = DB.getMaintenanceSettings();
+      settings.isActive = enabled;
+      DB.saveMaintenanceSettings(settings);
+      DB.addMaintenanceLog(message);
+      
+      return {
+        isMaintenanceMode: enabled,
+        maintenanceLogs: [
+          {
+            message,
+            timestamp: new Date(),
+            type: 'info'
+          },
+          ...state.maintenanceLogs
+        ]
+      };
+    }),
+  
+  addMaintenanceLog: (message, type = 'info') => 
+    set((state) => {
+      // Save to database
+      DB.addMaintenanceLog(message, type);
+      
+      return {
+        maintenanceLogs: [
+          {
+            message,
+            timestamp: new Date(),
+            type
+          },
+          ...state.maintenanceLogs
+        ]
+      };
+    }),
+  
+  setEstimatedTime: (minutes) => 
+    set((state) => {
+      // Save to database
+      const settings = DB.getMaintenanceSettings();
+      settings.estimatedTimeMinutes = minutes;
+      DB.saveMaintenanceSettings(settings);
+      DB.addMaintenanceLog(`Tempo estimado atualizado para ${minutes} minutos`);
+      
+      return {
+        estimatedTimeInMinutes: minutes,
+        maintenanceLogs: [
+          {
+            message: `Tempo estimado atualizado para ${minutes} minutos`,
+            timestamp: new Date(),
+            type: 'info'
+          },
+          ...state.maintenanceLogs
+        ]
+      };
+    }),
+}));
+
+// Hook to sync database changes with the store
+export const useSyncMaintenanceWithDatabase = () => {
+  const syncFromDatabase = () => {
+    const dbSettings = DB.getMaintenanceSettings();
+    const { setMaintenanceMode, setEstimatedTime } = useMaintenanceStore.getState();
+    
+    // Only update if there's a change
+    const storeState = useMaintenanceStore.getState();
+    if (storeState.isMaintenanceMode !== dbSettings.isActive) {
+      setMaintenanceMode(dbSettings.isActive);
     }
-  )
-);
+    
+    if (storeState.estimatedTimeInMinutes !== dbSettings.estimatedTimeMinutes) {
+      setEstimatedTime(dbSettings.estimatedTimeMinutes);
+    }
+  };
+  
+  // Return the sync function for components to use
+  return { syncFromDatabase };
+};
 
 // In a real implementation, this would connect to a WebSocket or use polling
-// to receive real-time updates from the Discord bot
+// to receive real-time updates
 export const initMaintenanceBotConnection = () => {
   console.log('Initializing connection to maintenance bot (simulated)');
   
-  // Simulate bot messages coming in at random intervals
-  const botMessages = [
-    'Verificando estado dos servidores',
-    'Atualizando drivers de GPU',
-    'Instalando patches de segurança',
-    'Otimizando performance do sistema',
-    'Testando latência da rede',
-    'Reinstalando pacotes do sistema',
-    'Verificando integridade dos arquivos',
-    'Configurando novas instâncias'
-  ];
-  
-  let timeoutId: ReturnType<typeof setTimeout>;
-  
-  // Random bot activity simulation
-  const simulateRandomBotActivity = () => {
-    const { simulateBotAction, addMaintenanceLog } = useMaintenanceStore.getState();
-    
-    const randomAction = Math.random();
-    
-    if (randomAction < 0.7) {
-      // 70% chance to just log a message
-      const randomMessage = botMessages[Math.floor(Math.random() * botMessages.length)];
-      addMaintenanceLog(randomMessage);
-    } else if (randomAction < 0.85) {
-      // 15% chance to update time estimate
-      const newTime = Math.floor(Math.random() * 120) + 30; // 30 to 150 minutes
-      simulateBotAction('update-time', newTime);
-    } else if (randomAction < 0.92) {
-      // 7% chance to enable maintenance mode
-      simulateBotAction('enable');
-    } else {
-      // 8% chance to disable maintenance mode
-      simulateBotAction('disable');
-    }
-    
-    // Schedule next activity
-    const nextDelay = Math.floor(Math.random() * 30000) + 15000; // 15-45 seconds
-    timeoutId = setTimeout(simulateRandomBotActivity, nextDelay);
-  };
-  
-  // Start the simulation after a short delay
-  timeoutId = setTimeout(simulateRandomBotActivity, 5000);
-  
-  // Simulate an initial bot message
-  useMaintenanceStore.getState().addMaintenanceLog('Bot de manutenção conectado com sucesso');
+  // Make sure we're in sync with the database
+  const dbSettings = DB.getMaintenanceSettings();
+  const { setMaintenanceMode, setEstimatedTime } = useMaintenanceStore.getState();
+  setMaintenanceMode(dbSettings.isActive);
+  setEstimatedTime(dbSettings.estimatedTimeMinutes);
   
   return () => {
     console.log('Disconnecting from maintenance bot (simulated)');
-    clearTimeout(timeoutId);
   };
 };
 
 // Export a function to manually trigger the bot for testing
 export const triggerMaintenanceBot = (action: 'enable' | 'disable') => {
-  const { simulateBotAction } = useMaintenanceStore.getState();
-  simulateBotAction(action);
+  const { setMaintenanceMode } = useMaintenanceStore.getState();
+  setMaintenanceMode(action === 'enable');
 };

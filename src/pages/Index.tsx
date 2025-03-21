@@ -32,7 +32,7 @@ const Index = () => {
         <div className="relative z-10">
           <Navbar />
           
-          <main className="pt-32 pb-20 overflow-hidden text-center">
+          <main className="overflow-hidden">
             <HeroSection />
             <FeaturesSection />
           </main>
