@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -96,16 +95,16 @@ export default {
 					'100%': { opacity: '0' }
 				},
 				'fade-up': {
-					'0%': { opacity: '0', transform: 'translateY(20px)' },
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
 					'100%': { opacity: '1', transform: 'translateY(0)' }
 				},
 				'pulse-subtle': {
 					'0%, 100%': { opacity: '1' },
-					'50%': { opacity: '0.8' }
+					'50%': { opacity: '0.85' }
 				},
-				float: {
+				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
-					'50%': { transform: 'translateY(-10px)' }
+					'50%': { transform: 'translateY(-5px)' }
 				},
 				'slide-in-right': {
 					'0%': { transform: 'translateX(100%)', opacity: '0' },
@@ -116,20 +115,20 @@ export default {
 					'100%': { transform: 'translateX(0)', opacity: '1' }
 				},
 				'scale-in': {
-					'0%': { transform: 'scale(0.95)', opacity: '0' },
+					'0%': { transform: 'scale(0.98)', opacity: '0' },
 					'100%': { transform: 'scale(1)', opacity: '1' }
 				},
-				wiggle: {
-					'0%, 100%': { transform: 'rotate(-2deg)' },
-					'50%': { transform: 'rotate(2deg)' }
-				},
-                'button-glow': {
-                    '0%, 100%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.3)' },
-                    '50%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.6)' }
+				'glow-subtle': {
+                    '0%, 100%': { boxShadow: '0 0 5px rgba(139, 92, 246, 0.1)' },
+                    '50%': { boxShadow: '0 0 10px rgba(139, 92, 246, 0.2)' }
                 },
                 'text-shimmer': {
-                    '0%': { backgroundPosition: '-200% 0' },
+                    '0%': { backgroundPosition: '-100% 0' },
                     '100%': { backgroundPosition: '200% 0' }
+                },
+                'border-glow': {
+                    '0%, 100%': { borderColor: 'rgba(139, 92, 246, 0.2)' },
+                    '50%': { borderColor: 'rgba(139, 92, 246, 0.4)' }
                 }
 			},
 			animation: {
@@ -139,13 +138,13 @@ export default {
                 'fade-out': 'fade-out 0.4s ease-out',
 				'fade-up': 'fade-up 0.5s ease-out',
 				'pulse-subtle': 'pulse-subtle 3s ease-in-out infinite',
-				float: 'float 6s ease-in-out infinite',
+				'float': 'float 6s ease-in-out infinite',
 				'slide-in-right': 'slide-in-right 0.5s ease-out',
 				'slide-in-left': 'slide-in-left 0.5s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
-				wiggle: 'wiggle 1s ease-in-out infinite',
-                'button-glow': 'button-glow 2s ease-in-out infinite',
-                'text-shimmer': 'text-shimmer 3s ease-in-out infinite'
+                'glow-subtle': 'glow-subtle 4s ease-in-out infinite',
+                'text-shimmer': 'text-shimmer 4s ease-in-out infinite',
+                'border-glow': 'border-glow 4s ease-in-out infinite'
 			},
 			fontFamily: {
 				sans: ['Inter', 'sans-serif'],

@@ -17,20 +17,20 @@ const GlassCard: React.FC<GlassCardProps> = ({
   const getIntensityClass = () => {
     switch (intensity) {
       case 'light':
-        return 'bg-black/20 backdrop-blur-sm border border-white/5';
+        return 'bg-black/10 backdrop-blur-sm border border-white/5';
       case 'heavy':
-        return 'bg-black/60 backdrop-blur-xl border border-white/15';
+        return 'bg-black/40 backdrop-blur-lg border border-rive-purple/20';
       case 'medium':
       default:
-        return 'bg-black/40 backdrop-blur-lg border border-white/10';
+        return 'bg-black/20 backdrop-blur-md border border-rive-purple/10';
     }
   };
 
   return (
     <div 
-      className={`glass-card ${getIntensityClass()} p-6 rounded-xl shadow-md ${
+      className={`rounded-xl shadow-sm ${getIntensityClass()} ${
         hoverEffect 
-          ? 'transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:bg-black/50' 
+          ? 'transition-all duration-300 hover:border-rive-purple/30 hover:shadow-rive-purple/10' 
           : ''
       } ${className}`}
     >

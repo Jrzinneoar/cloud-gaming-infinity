@@ -4,8 +4,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import ParticleBackground from '../components/ui/ParticleBackground';
 import PageTransition from '../components/ui/PageTransition';
-import GlassCard from '../components/ui/GlassCard';
-import { Download, Monitor, Smartphone, Laptop, Globe, HelpCircle } from 'lucide-react';
+import { Download, Monitor, Smartphone, Laptop, Globe, HelpCircle, ExternalLink } from 'lucide-react';
 
 const DownloadPage = () => {
   const downloads = [
@@ -44,15 +43,15 @@ const DownloadPage = () => {
       case 'Windows':
       case 'macOS':
       case 'Linux':
-        return <Laptop className="h-4 w-4 text-rive-purple/90" />;
+        return <Laptop className="h-4 w-4 text-rive-purple" />;
       case 'Android':
       case 'iOS':
-        return <Smartphone className="h-4 w-4 text-rive-purple/90" />;
+        return <Smartphone className="h-4 w-4 text-rive-purple" />;
       case 'Navegador Web':
-        return <Globe className="h-4 w-4 text-rive-purple/90" />;
+        return <Globe className="h-4 w-4 text-rive-purple" />;
       case 'Raspberry Pi':
       default:
-        return <HelpCircle className="h-4 w-4 text-rive-purple/90" />;
+        return <Monitor className="h-4 w-4 text-rive-purple" />;
     }
   };
 
@@ -66,121 +65,118 @@ const DownloadPage = () => {
       <ParticleBackground />
       <Navbar />
       
-      <main className="pt-24">
+      <main className="min-h-screen pt-24 pb-16">
         {/* Hero Section */}
-        <section className="py-12 md:py-16 px-4">
-          <div className="text-center max-w-3xl mx-auto animate-fade-up">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-gradient">Softwares</span> Recomendados
+        <section className="py-12 px-4">
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              Software <span className="text-gradient">Recomendado</span>
             </h1>
             
-            <p className="text-white/80 text-lg mb-8">
-              Para acessar sua máquina na nuvem, você precisará de um cliente de streaming.
-              Recomendamos as seguintes opções para a melhor experiência.
+            <p className="text-white/70 text-lg mb-8 max-w-2xl mx-auto">
+              Para acessar sua máquina na nuvem com a melhor experiência possível, 
+              recomendamos os seguintes aplicativos de streaming remoto.
             </p>
           </div>
         </section>
         
         {/* Software Cards */}
-        <section className="py-8 md:py-12 px-4">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-8 px-4">
+          <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
             {downloads.map((app, index) => (
-              <GlassCard 
+              <div 
                 key={index}
-                className="mb-10 overflow-hidden animate-fade-up hover:shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all duration-300"
-                hoverEffect={false}
+                className="bg-black/40 backdrop-blur-md border border-rive-purple/30 rounded-xl overflow-hidden shadow-lg hover:shadow-rive-purple/10 transition-all duration-500"
               >
-                <div className="grid md:grid-cols-[1fr_2fr] gap-6 p-6">
-                  {/* Left Side - Logo & Download */}
-                  <div className="flex flex-col items-center justify-between text-center">
-                    <div className="bg-black/40 p-5 rounded-xl mb-6 w-full max-w-[200px]">
+                <div className="p-6">
+                  {/* Header with Logo */}
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-black/40 p-3 rounded-lg">
                       <img 
                         src={app.logo} 
                         alt={`${app.name} Logo`} 
-                        className="w-24 h-24 mx-auto object-contain" 
+                        className="w-12 h-12 object-contain" 
                       />
                     </div>
+                    <h2 className="text-2xl font-bold text-white">{app.name}</h2>
+                  </div>
+                  
+                  {/* Description */}
+                  <div className="mb-6">
+                    <p className="text-white/80 mb-4">{app.longDescription}</p>
                     
-                    <div className="w-full space-y-4">
-                      <h2 className="text-2xl font-bold text-white">{app.name}</h2>
-                      
-                      <div className="flex flex-wrap gap-2 justify-center">
-                        {app.platforms.map((platform, i) => (
-                          <div 
-                            key={i} 
-                            className="flex items-center gap-1 bg-black/20 px-3 py-1.5 rounded-full text-xs"
-                          >
-                            {getPlatformIcon(platform)}
-                            <span>{platform}</span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <a 
-                        href={app.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="primary-button block w-full py-3 px-6 mt-4"
-                      >
-                        <Download className="h-5 w-5 mr-2 inline-block" />
-                        Download
-                      </a>
+                    {/* Platforms */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {app.platforms.map((platform, i) => (
+                        <div 
+                          key={i} 
+                          className="flex items-center gap-1.5 bg-black/30 border border-rive-purple/20 px-3 py-1.5 rounded-full text-sm"
+                        >
+                          {getPlatformIcon(platform)}
+                          <span>{platform}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                   
-                  {/* Right Side - Info */}
-                  <div className="text-left">
-                    <div className="mb-6">
-                      <h3 className="text-xl font-semibold mb-2 text-white">Sobre</h3>
-                      <p className="text-white/80">{app.longDescription}</p>
-                    </div>
-                    
-                    <div>
-                      <h3 className="text-xl font-semibold mb-3 text-white">Características</h3>
-                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        {app.features.map((feature, i) => (
-                          <li key={i} className="flex items-start">
-                            <span className="text-rive-purple mr-2">•</span>
-                            <span className="text-white/80">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  {/* Features */}
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3 text-white">Características</h3>
+                    <ul className="grid grid-cols-1 gap-2">
+                      {app.features.map((feature, i) => (
+                        <li key={i} className="flex items-center">
+                          <span className="text-rive-purple mr-2">•</span>
+                          <span className="text-white/80">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
+                  
+                  {/* Download Button */}
+                  <a 
+                    href={app.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-rive-purple hover:bg-rive-purple-dark text-white py-3 px-5 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 w-full hover:scale-[1.02]"
+                  >
+                    <Download className="h-5 w-5" />
+                    Download {app.name}
+                  </a>
                 </div>
-              </GlassCard>
+              </div>
             ))}
           </div>
         </section>
         
         {/* Help Section */}
-        <section className="py-8 pb-16 px-4">
-          <GlassCard className="max-w-4xl mx-auto p-6 animate-fade-up">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="bg-rive-purple/10 p-4 rounded-full">
-                <HelpCircle className="h-10 w-10 text-rive-purple" />
-              </div>
-              
-              <div className="text-center md:text-left">
-                <h3 className="text-xl font-semibold mb-2 text-white">Precisa de ajuda?</h3>
-                <p className="text-white/80 mb-4">
-                  Se você está com dificuldades para configurar o software, nossa equipe de suporte está pronta para ajudar.
-                </p>
+        <section className="py-8 px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-black/30 backdrop-blur-md border border-rive-purple/20 rounded-xl p-6">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="bg-rive-purple/10 p-4 rounded-full">
+                  <HelpCircle className="h-10 w-10 text-rive-purple" />
+                </div>
                 
-                <a 
-                  href="https://discord.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="primary-button inline-flex items-center"
-                >
-                  Entrar no Discord
-                  <svg className="h-5 w-5 ml-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.393-.403.85-.548 1.235a16.813 16.813 0 0 0-5.145 0 12.84 12.84 0 0 0-.552-1.235.077.077 0 0 0-.079-.036 18.355 18.355 0 0 0-4.885 1.491.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 18.388 18.388 0 0 0 5.593 2.85.077.077 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.04.001-.088-.041-.104a12.212 12.212 0 0 1-1.746-.83.077.077 0 0 1-.008-.128 13.257 13.257 0 0 0 .288-.2.074.074 0 0 1 .078-.01c3.927 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.098.072.187.138.288.2a.077.077 0 0 1-.006.127 12.467 12.467 0 0 1-1.747.83.077.077 0 0 0-.041.105c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.028 18.32 18.32 0 0 0 5.594-2.85.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z" />
-                  </svg>
-                </a>
+                <div className="text-center md:text-left">
+                  <h3 className="text-xl font-semibold mb-2 text-white">Precisa de ajuda?</h3>
+                  <p className="text-white/80 mb-4 max-w-xl">
+                    Se você está com dificuldades para configurar o software ou tem dúvidas sobre qual escolher, 
+                    nossa equipe de suporte está pronta para ajudar.
+                  </p>
+                  
+                  <a 
+                    href="https://discord.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-rive-purple hover:bg-rive-purple-dark text-white py-2.5 px-5 rounded-lg transition-all duration-300 inline-flex items-center gap-2 hover:scale-[1.02]"
+                  >
+                    Suporte no Discord
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
               </div>
             </div>
-          </GlassCard>
+          </div>
         </section>
       </main>
       

@@ -19,14 +19,6 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     }
   }, [location, displayLocation]);
 
-  useEffect(() => {
-    if (transitionStage === 'fadeOut') {
-      document.body.classList.add('transition-active');
-    } else {
-      document.body.classList.remove('transition-active');
-    }
-  }, [transitionStage]);
-
   const handleAnimationEnd = () => {
     if (transitionStage === 'fadeOut') {
       setTransitionStage('fadeIn');
@@ -35,12 +27,12 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     }
   };
 
-  // Use faster, more subtle transitions
-  const duration = isMobile ? '0.12s' : '0.2s';
+  // Use very subtle transitions similar to apexgaming.cloud
+  const duration = isMobile ? '0.15s' : '0.25s';
 
   return (
     <div
-      className={`${
+      className={`min-h-screen ${
         transitionStage === 'fadeIn' 
           ? `animate-[fade-in_${duration}_ease-out] motion-reduce:animate-none` 
           : `animate-[fade-out_${duration}_ease-out] motion-reduce:animate-none`
