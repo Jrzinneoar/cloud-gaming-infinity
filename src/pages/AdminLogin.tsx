@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { Lock, User } from 'lucide-react';
 import { DB } from '../services/database';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -17,9 +18,9 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Check if user is already logged in
+  // Check if user is already logged in - use sessionStorage instead of localStorage
   useEffect(() => {
-    const adminAuth = localStorage.getItem('admin-auth');
+    const adminAuth = sessionStorage.getItem('admin-auth');
     if (adminAuth === 'true') {
       navigate('/admin-panel');
     }
@@ -32,8 +33,8 @@ const AdminLogin = () => {
     // Simple login check
     if (username === 'rive' && password === 'rive') {
       setTimeout(() => {
-        // Store authentication in localStorage for persistence
-        localStorage.setItem('admin-auth', 'true');
+        // Store authentication in sessionStorage for persistence
+        sessionStorage.setItem('admin-auth', 'true');
         
         DB.addMaintenanceLog('Admin login bem-sucedido', 'info');
         
@@ -74,7 +75,7 @@ const AdminLogin = () => {
             <img 
               src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
               alt="Rive Cloud Logo" 
-              className="h-16 animate-pulse-subtle"
+              className="h-16"
             />
           </div>
           
@@ -111,7 +112,7 @@ const AdminLogin = () => {
             
             <Button 
               type="submit" 
-              className="w-full bg-gradient-to-r from-rive-purple to-rive-purple-dark hover:opacity-90 transition-all duration-300 animate-pulse-subtle"
+              className="w-full bg-gradient-to-r from-rive-purple to-rive-purple-dark hover:opacity-90 transition-all duration-300"
               disabled={isLoading}
             >
               {isLoading ? 'Autenticando...' : 'Entrar'}

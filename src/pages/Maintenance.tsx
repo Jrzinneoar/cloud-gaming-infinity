@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useEffect, useState } from 'react';
 import ParticleBackground from '../components/ui/ParticleBackground';
 import GlassCard from '../components/ui/GlassCard';
-import { Clock, AlertTriangle } from 'lucide-react';
+import { Clock, Server, AlertTriangle } from 'lucide-react';
 import { useMaintenanceStore } from '../services/maintenanceService';
 import { DB } from '../services/database';
 
@@ -72,56 +72,64 @@ const Maintenance = () => {
         <ParticleBackground />
       </div>
       
-      <div className="max-w-xl w-full z-10 animate-fade-up">
-        <div className="text-center mb-10">
+      <div className="max-w-lg w-full z-10 animate-fade-up">
+        <div className="text-center mb-8">
           <div className="flex justify-center mb-6">
             <img 
               src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
               alt="Rive Cloud Logo" 
-              className="h-20 mx-auto animate-pulse-subtle"
+              className="h-16 mx-auto"
             />
           </div>
           
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <AlertTriangle className="h-8 w-8 text-yellow-400 animate-pulse" />
-            <h1 className="text-4xl font-bold">
-              <span className="text-gradient">Em</span> Manutenção
-            </h1>
-            <AlertTriangle className="h-8 w-8 text-yellow-400 animate-pulse" />
-          </div>
+          <h1 className="text-3xl font-bold mb-2 flex items-center justify-center gap-2">
+            <AlertTriangle className="h-6 w-6 text-yellow-300" />
+            <span className="azure-text-gradient">Manutenção em Andamento</span>
+          </h1>
           
-          <p className="text-xl text-white/80 max-w-md mx-auto">
-            Estamos atualizando nossos sistemas para melhorar sua experiência. 
-            Em breve estaremos de volta!
+          <p className="text-lg text-white/70 max-w-md mx-auto">
+            Estamos aprimorando nossa plataforma para melhorar sua experiência
           </p>
         </div>
         
         <GlassCard className="p-8">
           <div className="flex items-center gap-3 mb-6">
-            <Clock className="h-6 w-6 text-rive-purple" />
-            <h2 className="text-2xl font-bold text-white">Tempo Estimado</h2>
+            <Server className="h-6 w-6 text-blue-400" />
+            <h2 className="text-xl font-semibold text-white">Atualizando Servidores Azure</h2>
           </div>
           
-          <div className="grid grid-cols-3 gap-4 text-center mb-8">
-            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
-                {formatNumber(timeRemaining.hours)}
-              </div>
-              <div className="text-white/60 text-sm">Horas</div>
+          <p className="text-white/70 mb-6">
+            Estamos realizando uma atualização nos nossos servidores para garantir 
+            mais estabilidade e desempenho na sua experiência com a RIVE CLOUD.
+          </p>
+          
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-3">
+              <Clock className="h-5 w-5 text-blue-400" />
+              <h3 className="text-lg font-medium text-white">Tempo Estimado</h3>
             </div>
             
-            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
-                {formatNumber(timeRemaining.minutes)}
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div className="glass-panel p-3 rounded-lg">
+                <div className="text-3xl font-bold text-white mb-1">
+                  {formatNumber(timeRemaining.hours)}
+                </div>
+                <div className="text-white/60 text-xs">Horas</div>
               </div>
-              <div className="text-white/60 text-sm">Minutos</div>
-            </div>
-            
-            <div className="glass-panel p-4 rounded-lg hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold text-white mb-1 animate-pulse-subtle">
-                {formatNumber(timeRemaining.seconds)}
+              
+              <div className="glass-panel p-3 rounded-lg">
+                <div className="text-3xl font-bold text-white mb-1">
+                  {formatNumber(timeRemaining.minutes)}
+                </div>
+                <div className="text-white/60 text-xs">Minutos</div>
               </div>
-              <div className="text-white/60 text-sm">Segundos</div>
+              
+              <div className="glass-panel p-3 rounded-lg">
+                <div className="text-3xl font-bold text-white mb-1">
+                  {formatNumber(timeRemaining.seconds)}
+                </div>
+                <div className="text-white/60 text-xs">Segundos</div>
+              </div>
             </div>
           </div>
           
@@ -130,15 +138,19 @@ const Maintenance = () => {
               href="https://discord.gg/fDPvmrhGcd"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full shadow-lg shadow-rive-purple/20 hover:shadow-rive-purple/40 transition-all duration-300 hover:scale-105 flex items-center justify-center max-w-xs mx-auto animate-button-glow"
+              className="azure-button inline-flex items-center"
             >
               <img 
                 src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033483446419556/discord-white-icon.png" 
                 alt="Discord Logo" 
-                className="h-5 w-5 mr-2"
+                className="h-4 w-4 mr-2"
               />
               <span>Acompanhe no Discord</span>
             </a>
+            
+            <p className="mt-4 text-white/50 text-sm">
+              Agradecemos sua paciência! Estamos trabalhando para voltar o mais rápido possível.
+            </p>
           </div>
         </GlassCard>
       </div>

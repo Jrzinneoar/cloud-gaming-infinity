@@ -89,23 +89,23 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-black/20 backdrop-blur-lg border border-white/10 rounded-2xl shadow-xl hover:shadow-rive-purple/10 transition-shadow duration-300;
+    @apply bg-black/20 backdrop-blur-lg border border-white/10 rounded-2xl shadow-md hover:shadow-blue-500/5 transition-shadow duration-300;
   }
   
   .glass-card {
-    @apply bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl shadow-md hover:shadow-rive-purple/10 transition-all duration-300;
+    @apply bg-black/30 backdrop-blur-md border border-white/10 rounded-xl shadow-sm hover:shadow-blue-500/5 transition-all duration-300;
   }
   
   .glass-button {
-    @apply bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:border-rive-purple/20 rounded-lg transition-all duration-300 ease-in-out shadow-sm hover:shadow-rive-purple/10;
+    @apply bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 hover:border-blue-400/20 rounded-lg transition-all duration-300 ease-in-out shadow-sm hover:shadow-blue-500/5;
   }
   
   .primary-button {
-    @apply bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full font-medium transition-all duration-500 ease-in-out shadow-md hover:shadow-rive-purple/30 hover:scale-105 animate-pulse-subtle;
+    @apply bg-gradient-to-r from-rive-purple to-rive-purple-dark text-white px-6 py-3 rounded-full font-medium transition-all duration-500 ease-in-out shadow-md hover:shadow-rive-purple/20 hover:scale-105;
   }
   
   .azure-button {
-    @apply bg-gradient-to-r from-blue-600 to-rive-purple text-white px-6 py-3 rounded-full font-medium transition-all duration-500 ease-in-out shadow-md hover:shadow-blue-500/30 hover:scale-105 animate-pulse-subtle;
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-md hover:shadow-blue-500/20 hover:scale-105;
   }
   
   .secondary-button {
@@ -113,15 +113,15 @@
   }
   
   .subtle-button {
-    @apply bg-transparent hover:bg-white/5 border border-white/10 hover:border-rive-purple/20 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-rive-purple/10;
+    @apply bg-transparent hover:bg-white/5 border border-white/10 hover:border-blue-400/20 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-blue-500/5;
   }
   
   .azure-subtle-button {
-    @apply bg-transparent hover:bg-white/5 border border-blue-500/30 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-blue-500/10;
+    @apply bg-transparent hover:bg-white/5 border border-blue-500/20 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-blue-500/5;
   }
   
   .glass-input {
-    @apply bg-black/20 backdrop-blur-md border border-white/10 rounded-lg px-4 py-2 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-rive-purple/50 transition-all duration-300;
+    @apply bg-black/20 backdrop-blur-md border border-white/10 rounded-lg px-4 py-2 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400/30 transition-all duration-300;
   }
   
   .text-gradient {
@@ -137,7 +137,7 @@
   }
   
   .section-container {
-    @apply container mx-auto px-4 py-16 md:py-24 text-center;
+    @apply container mx-auto px-4 py-12 md:py-16 text-center;
   }
   
   .page-padding {
@@ -145,19 +145,19 @@
   }
 
   .btn-glow {
-    @apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-rive-purple/0 before:via-rive-purple/30 before:to-rive-purple/0 before:animate-glow;
+    @apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-rive-purple/0 before:via-rive-purple/20 before:to-rive-purple/0 before:animate-glow;
   }
   
   .azure-btn-glow {
-    @apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/0 before:via-blue-500/30 before:to-blue-500/0 before:animate-glow;
+    @apply relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-blue-500/0 before:via-blue-500/20 before:to-blue-500/0 before:animate-glow;
   }
 
   .card-glow {
-    @apply relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-rive-purple/0 after:via-rive-purple/10 after:to-rive-purple/0 after:animate-glow after:pointer-events-none;
+    @apply relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-rive-purple/0 after:via-rive-purple/5 after:to-rive-purple/0 after:animate-glow after:pointer-events-none;
   }
   
   .azure-card-glow {
-    @apply relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-blue-500/0 after:via-blue-500/10 after:to-blue-500/0 after:animate-glow after:pointer-events-none;
+    @apply relative overflow-hidden after:absolute after:inset-0 after:bg-gradient-to-r after:from-blue-500/0 after:via-blue-500/5 after:to-blue-500/0 after:animate-glow after:pointer-events-none;
   }
 }
 
@@ -182,6 +182,10 @@
     animation-delay: 500ms;
   }
   
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+  
   .animation-delay-700 {
     animation-delay: 700ms;
   }
@@ -199,38 +203,38 @@
   }
   
   .hover-glow:hover {
-    box-shadow: 0 0 15px theme('colors.rive.purple');
+    box-shadow: 0 0 10px theme('colors.blue.500');
   }
   
   .azure-hover-glow:hover {
-    box-shadow: 0 0 15px theme('colors.blue.500');
+    box-shadow: 0 0 10px theme('colors.blue.500');
   }
 
   @keyframes glow {
     0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
 
   .animate-glow {
-    animation: glow 3s infinite;
+    animation: glow 5s infinite;
   }
 
   @keyframes float-slow {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
 
   .animate-float-slow {
-    animation: float-slow 5s ease-in-out infinite;
+    animation: float-slow 6s ease-in-out infinite;
   }
 
   @keyframes pulse-subtle {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    50% { opacity: 0.85; }
   }
 
   .animate-pulse-subtle {
-    animation: pulse-subtle 3s ease-in-out infinite;
+    animation: pulse-subtle 4s ease-in-out infinite;
   }
   
   @keyframes rotate-slow {
@@ -239,7 +243,7 @@
   }
   
   .animate-rotate-slow {
-    animation: rotate-slow 15s linear infinite;
+    animation: rotate-slow 20s linear infinite;
   }
   
   @keyframes bounce-subtle {
@@ -247,21 +251,21 @@
       transform: translateY(0); 
     }
     50% { 
-      transform: translateY(-5px); 
+      transform: translateY(-4px); 
     }
   }
   
   .animate-bounce-subtle {
-    animation: bounce-subtle 2s ease-in-out infinite;
+    animation: bounce-subtle 3s ease-in-out infinite;
   }
 
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: theme('colors.rive.purple') rgba(0, 0, 0, 0.2);
+    scrollbar-color: theme('colors.blue.500') rgba(0, 0, 0, 0.2);
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -270,7 +274,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: theme('colors.rive.purple');
+    background-color: theme('colors.blue.500');
     border-radius: 10px;
   }
   
@@ -283,41 +287,35 @@
     background-color: theme('colors.blue.500');
   }
   
-  /* Text neon effect */
+  /* Text neon effect with reduced glow */
   .text-neon {
-    text-shadow: 0 0 7px theme('colors.rive.purple'), 
-                 0 0 10px theme('colors.rive.purple'), 
-                 0 0 21px theme('colors.rive.purple');
+    text-shadow: 0 0 5px theme('colors.rive.purple'), 
+                 0 0 8px theme('colors.rive.purple');
   }
   
   .azure-text-neon {
-    text-shadow: 0 0 7px theme('colors.blue.500'), 
-                 0 0 10px theme('colors.blue.500'), 
-                 0 0 21px theme('colors.blue.500');
+    text-shadow: 0 0 5px theme('colors.blue.500'), 
+                 0 0 8px theme('colors.blue.500');
   }
   
-  /* Button glow effect */
+  /* Button glow effect with reduced intensity */
   .btn-neon {
-    box-shadow: 0 0 7px theme('colors.rive.purple'), 
-                0 0 10px theme('colors.rive.purple');
+    box-shadow: 0 0 5px theme('colors.rive.purple');
     transition: box-shadow 0.3s ease;
   }
   
   .btn-neon:hover {
-    box-shadow: 0 0 10px theme('colors.rive.purple'), 
-                0 0 20px theme('colors.rive.purple'), 
-                0 0 30px theme('colors.rive.purple');
+    box-shadow: 0 0 8px theme('colors.rive.purple'), 
+                0 0 12px theme('colors.rive.purple');
   }
   
   .azure-btn-neon {
-    box-shadow: 0 0 7px theme('colors.blue.500'), 
-                0 0 10px theme('colors.blue.500');
+    box-shadow: 0 0 5px theme('colors.blue.500');
     transition: box-shadow 0.3s ease;
   }
   
   .azure-btn-neon:hover {
-    box-shadow: 0 0 10px theme('colors.blue.500'), 
-                0 0 20px theme('colors.blue.500'), 
-                0 0 30px theme('colors.blue.500');
+    box-shadow: 0 0 8px theme('colors.blue.500'), 
+                0 0 12px theme('colors.blue.500');
   }
 }
