@@ -1,5 +1,5 @@
 
-import { Zap, Shield, Clock, Globe, Cloud, Cpu, Database, GitBranch, Tool, ArrowRight } from 'lucide-react';
+import { Zap, Shield, Clock, Globe, Cloud, Cpu, Database, GitBranch, Wrench, ArrowRight } from 'lucide-react';
 import GlassCard from '../ui/GlassCard';
 
 const FeaturesSection = () => {
@@ -45,7 +45,7 @@ const FeaturesSection = () => {
       description: 'Integração com todo o ecossistema de serviços Microsoft Azure para expandir suas capacidades.',
     },
     {
-      icon: <Tool className="h-10 w-10 text-blue-400" />,
+      icon: <Wrench className="h-10 w-10 text-blue-400" />,
       title: 'Personalização Total',
       description: 'Configure sua máquina virtual Azure de acordo com suas necessidades específicas.',
     }
