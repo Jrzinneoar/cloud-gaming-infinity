@@ -44,7 +44,7 @@ const Navbar = () => {
             onClick={() => setIsOpen(false)}
           >
             <img 
-              src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png" 
+              src="https://cdn.discordapp.com/attachments/1351959002510266384/1352033942051622973/Rive_Cloud.png?ex=67dddcbb&is=67dc8b3b&hm=cccea5effb7d20d3023a7047094eef526e18770a124fafc2a6b540b542f593bc&" 
               alt="Rive Cloud Logo" 
               className="h-10 w-auto animate-pulse-subtle"
             />
