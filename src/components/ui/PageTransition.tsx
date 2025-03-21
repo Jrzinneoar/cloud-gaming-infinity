@@ -36,8 +36,8 @@ const PageTransition: React.FC<PageTransitionProps> = ({ children }) => {
     }
   };
 
-  // Use much faster transitions on mobile
-  const duration = isMobile ? '0.05s' : '0.15s';
+  // Use much faster transitions on mobile, still smooth on desktop
+  const duration = isMobile ? '0.2s' : '0.3s';
 
   return (
     <div

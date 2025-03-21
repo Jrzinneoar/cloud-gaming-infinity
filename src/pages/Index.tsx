@@ -20,8 +20,8 @@ const Index = () => {
   return (
     <PageTransition>
       <Helmet>
-        <title>RIVE CLOUD | Cloud Gaming | Poder Ilimitado</title>
-        <meta name="description" content="Experimente o poder ilimitado do cloud gaming com a RIVE CLOUD. Trabalhe, jogue e renderize com a melhor tecnologia do mercado." />
+        <title>RIVE CLOUD | Máquinas Virtuais Azure | Poder Ilimitado</title>
+        <meta name="description" content="Máquinas virtuais Azure com o poder da RIVE CLOUD. Trabalhe, jogue e renderize com a melhor tecnologia em computação em nuvem." />
       </Helmet>
 
       <div className="relative min-h-screen w-full bg-black overflow-hidden">

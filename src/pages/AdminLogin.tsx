@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import ParticleBackground from '../components/ui/ParticleBackground';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
 import { Lock, User } from 'lucide-react';
+import { DB } from '../services/database';
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('');
@@ -16,6 +17,14 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Check if user is already logged in
+  useEffect(() => {
+    const adminAuth = localStorage.getItem('admin-auth');
+    if (adminAuth === 'true') {
+      navigate('/admin-panel');
+    }
+  }, [navigate]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -23,6 +32,11 @@ const AdminLogin = () => {
     // Simple login check
     if (username === 'rive' && password === 'rive') {
       setTimeout(() => {
+        // Store authentication in localStorage for persistence
+        localStorage.setItem('admin-auth', 'true');
+        
+        DB.addMaintenanceLog('Admin login bem-sucedido', 'info');
+        
         toast({
           title: "Login bem-sucedido",
           description: "Bem-vindo ao painel administrativo.",
@@ -33,6 +47,8 @@ const AdminLogin = () => {
       }, 1000);
     } else {
       setTimeout(() => {
+        DB.addMaintenanceLog('Tentativa de login falhou', 'warning');
+        
         toast({
           title: "Erro de autenticação",
           description: "Credenciais inválidas. Tente novamente.",
@@ -104,6 +120,7 @@ const AdminLogin = () => {
           
           <div className="mt-6 text-center text-white/60 text-sm">
             <p>Acesso restrito aos administradores</p>
+            <p className="mt-2">Usuário: rive | Senha: rive</p>
           </div>
         </GlassCard>
       </div>

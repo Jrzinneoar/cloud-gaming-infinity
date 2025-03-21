@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import { useMaintenanceStore, initMaintenanceBotConnection } from "./services/maintenanceService";
+import { DB } from "./services/database";
 
 // Pages
 import Index from "./pages/Index";
@@ -21,17 +22,22 @@ import AdminPanel from "./pages/AdminPanel";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { isMaintenanceMode } = useMaintenanceStore();
+  const { isMaintenanceMode, setMaintenanceMode, setEstimatedTime } = useMaintenanceStore();
 
   useEffect(() => {
     // Initialize the maintenance service
     const disconnect = initMaintenanceBotConnection();
     console.log("Maintenance service initialized");
     
+    // Load maintenance settings from database
+    const maintenanceSettings = DB.getMaintenanceSettings();
+    setMaintenanceMode(maintenanceSettings.isActive);
+    setEstimatedTime(maintenanceSettings.estimatedTimeMinutes);
+    
     return () => {
       disconnect();
     };
-  }, []);
+  }, [setMaintenanceMode, setEstimatedTime]);
 
   return (
     <QueryClientProvider client={queryClient}>

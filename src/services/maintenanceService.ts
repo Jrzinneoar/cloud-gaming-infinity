@@ -1,164 +1,108 @@
 
 import { create } from 'zustand';
-import { DB } from './database';
+import { DB, MaintenanceSettings } from './database';
 
-interface MaintenanceState {
-  isMaintenanceMode: boolean;
-  maintenanceLogs: {
-    message: string;
-    timestamp: Date;
-    type: 'info' | 'warning' | 'error';
-  }[];
-  toggleMaintenanceMode: () => void;
-  setMaintenanceMode: (enabled: boolean) => void;
-  addMaintenanceLog: (message: string, type?: 'info' | 'warning' | 'error') => void;
-  estimatedTimeInMinutes: number;
-  setEstimatedTime: (minutes: number) => void;
+// Define types for our maintenance store
+interface MaintenanceLog {
+  message: string;
+  timestamp: Date;
+  type: 'info' | 'warning' | 'error';
 }
 
-// Load initial state from database
-const initialState = DB.getMaintenanceSettings();
+interface MaintenanceStore {
+  isMaintenanceMode: boolean;
+  estimatedTimeInMinutes: number;
+  maintenanceLogs: MaintenanceLog[];
+  setMaintenanceMode: (mode: boolean) => void;
+  toggleMaintenanceMode: () => void;
+  setEstimatedTime: (minutes: number) => void;
+  addMaintenanceLog: (message: string, type?: 'info' | 'warning' | 'error') => void;
+}
 
-export const useMaintenanceStore = create<MaintenanceState>()((set) => ({
-  isMaintenanceMode: initialState.isActive,
-  estimatedTimeInMinutes: initialState.estimatedTimeMinutes,
-  maintenanceLogs: initialState.logs.map(log => ({
-    message: log.message,
-    timestamp: new Date(log.timestamp),
-    type: log.type
-  })),
+// Create the Zustand store
+export const useMaintenanceStore = create<MaintenanceStore>((set, get) => ({
+  isMaintenanceMode: false,
+  estimatedTimeInMinutes: 60,
+  maintenanceLogs: [],
   
-  toggleMaintenanceMode: () => 
-    set((state) => {
-      const newMode = !state.isMaintenanceMode;
-      const message = newMode 
-        ? 'Iniciando modo de manutenção do sistema' 
-        : 'Finalizando modo de manutenção do sistema';
-      
-      // Save to database
-      const settings = DB.getMaintenanceSettings();
-      settings.isActive = newMode;
-      DB.saveMaintenanceSettings(settings);
-      DB.addMaintenanceLog(message);
-      
-      return {
-        isMaintenanceMode: newMode,
-        maintenanceLogs: [
-          {
-            message,
-            timestamp: new Date(),
-            type: 'info'
-          },
-          ...state.maintenanceLogs
-        ]
-      };
-    }),
+  // Set maintenance mode
+  setMaintenanceMode: (mode: boolean) => {
+    set({ isMaintenanceMode: mode });
+    
+    // Update the database
+    const settings = DB.getMaintenanceSettings();
+    settings.isActive = mode;
+    DB.saveMaintenanceSettings(settings);
+    
+    // Add log
+    get().addMaintenanceLog(`Modo de manutenção ${mode ? 'ativado' : 'desativado'}`, 'info');
+  },
   
-  setMaintenanceMode: (enabled) => 
-    set((state) => {
-      if (state.isMaintenanceMode === enabled) return state;
-      
-      const message = enabled 
-        ? 'Iniciando modo de manutenção do sistema' 
-        : 'Finalizando modo de manutenção do sistema';
-      
-      // Save to database
-      const settings = DB.getMaintenanceSettings();
-      settings.isActive = enabled;
-      DB.saveMaintenanceSettings(settings);
-      DB.addMaintenanceLog(message);
-      
-      return {
-        isMaintenanceMode: enabled,
-        maintenanceLogs: [
-          {
-            message,
-            timestamp: new Date(),
-            type: 'info'
-          },
-          ...state.maintenanceLogs
-        ]
-      };
-    }),
+  // Toggle maintenance mode
+  toggleMaintenanceMode: () => {
+    const currentMode = get().isMaintenanceMode;
+    get().setMaintenanceMode(!currentMode);
+  },
   
-  addMaintenanceLog: (message, type = 'info') => 
-    set((state) => {
-      // Save to database
-      DB.addMaintenanceLog(message, type);
-      
-      return {
-        maintenanceLogs: [
-          {
-            message,
-            timestamp: new Date(),
-            type
-          },
-          ...state.maintenanceLogs
-        ]
-      };
-    }),
+  // Set estimated time
+  setEstimatedTime: (minutes: number) => {
+    set({ estimatedTimeInMinutes: minutes });
+    
+    // Update the database
+    const settings = DB.getMaintenanceSettings();
+    settings.estimatedTimeMinutes = minutes;
+    DB.saveMaintenanceSettings(settings);
+    
+    // Add log
+    get().addMaintenanceLog(`Tempo estimado atualizado para ${minutes} minutos`, 'info');
+  },
   
-  setEstimatedTime: (minutes) => 
-    set((state) => {
-      // Save to database
-      const settings = DB.getMaintenanceSettings();
-      settings.estimatedTimeMinutes = minutes;
-      DB.saveMaintenanceSettings(settings);
-      DB.addMaintenanceLog(`Tempo estimado atualizado para ${minutes} minutos`);
-      
-      return {
-        estimatedTimeInMinutes: minutes,
-        maintenanceLogs: [
-          {
-            message: `Tempo estimado atualizado para ${minutes} minutos`,
-            timestamp: new Date(),
-            type: 'info'
-          },
-          ...state.maintenanceLogs
-        ]
-      };
-    }),
+  // Add maintenance log
+  addMaintenanceLog: (message: string, type = 'info') => {
+    const newLog = {
+      message,
+      timestamp: new Date(),
+      type
+    };
+    
+    set(state => ({
+      maintenanceLogs: [newLog, ...state.maintenanceLogs].slice(0, 50) // Keep only the last 50 logs
+    }));
+    
+    // Add to database logs
+    DB.addMaintenanceLog(message, type);
+  }
 }));
 
-// Hook to sync database changes with the store
-export const useSyncMaintenanceWithDatabase = () => {
-  const syncFromDatabase = () => {
-    const dbSettings = DB.getMaintenanceSettings();
-    const { setMaintenanceMode, setEstimatedTime } = useMaintenanceStore.getState();
-    
-    // Only update if there's a change
-    const storeState = useMaintenanceStore.getState();
-    if (storeState.isMaintenanceMode !== dbSettings.isActive) {
-      setMaintenanceMode(dbSettings.isActive);
-    }
-    
-    if (storeState.estimatedTimeInMinutes !== dbSettings.estimatedTimeMinutes) {
-      setEstimatedTime(dbSettings.estimatedTimeMinutes);
-    }
-  };
-  
-  // Return the sync function for components to use
-  return { syncFromDatabase };
-};
-
-// In a real implementation, this would connect to a WebSocket or use polling
-// to receive real-time updates
+// Function to initialize the connection to the maintenance bot
+// This is a simplified version since we're using localStorage
 export const initMaintenanceBotConnection = () => {
+  // Log the initialization
   console.log('Initializing connection to maintenance bot (simulated)');
   
-  // Make sure we're in sync with the database
-  const dbSettings = DB.getMaintenanceSettings();
-  const { setMaintenanceMode, setEstimatedTime } = useMaintenanceStore.getState();
-  setMaintenanceMode(dbSettings.isActive);
-  setEstimatedTime(dbSettings.estimatedTimeMinutes);
+  // Load initial maintenance settings from the database
+  const settings = DB.getMaintenanceSettings();
   
+  // Update the store with database values
+  const store = useMaintenanceStore.getState();
+  
+  // Update store with database values if they exist
+  if (settings) {
+    store.setMaintenanceMode(settings.isActive);
+    store.setEstimatedTime(settings.estimatedTimeMinutes);
+    
+    // Load logs
+    const logs: MaintenanceLog[] = settings.logs.map(log => ({
+      message: log.message,
+      timestamp: new Date(log.timestamp),
+      type: log.type
+    }));
+    
+    useMaintenanceStore.setState({ maintenanceLogs: logs });
+  }
+  
+  // Return a function to disconnect
   return () => {
-    console.log('Disconnecting from maintenance bot (simulated)');
+    console.log('Disconnecting from maintenance bot');
   };
-};
-
-// Export a function to manually trigger the bot for testing
-export const triggerMaintenanceBot = (action: 'enable' | 'disable') => {
-  const { setMaintenanceMode } = useMaintenanceStore.getState();
-  setMaintenanceMode(action === 'enable');
 };
